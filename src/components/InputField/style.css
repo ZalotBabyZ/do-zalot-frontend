@@ -1,0 +1,40 @@
+.input-field {
+  width: 80%;
+}
+.input-box {
+  display: block;
+  text-align: left;
+  width: 100%;
+  height: 30px;
+  color: var(--secondaryDarkest-color);
+  background-color: var(--secondaryBrightest-color);
+  border: 2px var(--secondaryDarkest-color) double;
+  box-shadow: 1px 1px 3px var(--secondaryDarkest-color);
+  font-family: thaisans_neuesemi_bold;
+  font-size: 15px;
+  margin: 5px 0px;
+}
+.input-value--validated {
+  background-color: white;
+}
+.input-value--alert {
+  color: var(--thirdaryDarkest-color);
+  background-color: var(--thirdaryBrightest-color);
+  border-color: var(--thirdaryDarkest-color);
+  box-shadow: 1px 1px 3px var(--thirdaryDarkest-color);
+}
+.input-label {
+  display: block;
+  text-align: left;
+  width: 100%;
+  color: var(--secondaryDarkest-color);
+  font-family: thaisans_neuesemi_bold;
+  font-size: 20px;
+}
+.msg-alert {
+  display: block;
+  text-align: center;
+  width: 100%;
+  color: var(--thirdaryDarkest-color);
+  font-size: 8px;
+}

@@ -1,3 +1,30 @@
+:root {
+  /* Color Palette */
+  --primary-color: #5ac4f2;
+  --secondary-color: #ffd058;
+  --thirdary-color: #ff7858;
+  --primaryBright-color: #99d9f5;
+  --secondaryBright-color: #ffe29a;
+  --thirdaryBright-color: #ffad9a;
+  --primaryBrightest-color: #f3fbfe;
+  --secondaryBrightest-color: #fffcf3;
+  --thirdaryBrightest-color: #fff5f3;
+  --primaryDark-color: #21b2f1;
+  --secondaryDark-color: #ffbe19;
+  --thirdaryDark-color: #ff4519;
+  --primaryDarkest-color: #01a7ef;
+  --secondaryDarkest-color: #ffb700;
+  --thirdaryDarkest-color: #ff3100;
+}
+#root {
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
 .App {
   text-align: center;
 }
@@ -28,11 +55,18 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn-submit {
+  height: 40px;
+  color: var(--secondaryBrightest-color);
+  background-color: var(--secondaryDark-color);
+  border-radius: 20px;
+  border: 2px var(--secondaryBrightest-color) solid;
+  box-shadow: 3px 3px 2px var(--secondaryBright-color);
+  margin: 20px;
+  min-width: 70px;
+}
+.card-submit {
+  border: 2px var(--secondary-color) dashed;
+  min-width: 200px;
+  border-radius: 5px;
 }

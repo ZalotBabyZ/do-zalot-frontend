@@ -12,10 +12,12 @@ function Layout({ children, role, setRole, page }) {
       <div className="bar-project-status">
         <BarProject />
       </div>
+      <div className="page-head"></div>
       <div className="page-wrap">
         <div className="nav-project">
           <NavProject />
         </div>
+        <div className="page-side"></div>
         <div className="page-container"> {children} </div>
       </div>
     </div>

@@ -48,3 +48,11 @@
   position: absolute;
   color: white;
 }
+@media only screen and (max-width: 500px) {
+  .container-bar-project {
+    font-size: 10px;
+  }
+  .bar-project-name {
+    font-size: 12px;
+  }
+}

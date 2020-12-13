@@ -11,50 +11,69 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  z-index: 3;
 }
 .bar-project-status {
   width: 100vw;
   height: 10vh;
+  position: fixed;
+  top: 5%;
   background-color: var(--primaryBrightest-color);
   display: flex;
   justify-content: center;
   align-items: center;
   border-bottom: 3px dashed var(--primary-color);
+  z-index: 2;
+}
+.page-head {
+  height: 15vh;
 }
 .page-wrap {
-  width: 100vw;
-  height: 85vh;
+  display: flex;
+  flex-direction: row;
+}
+.page-side {
+  width: 80px;
 }
 .nav-project {
   width: 80px;
-  height: 100%;
+  height: 85vh;
+  position: fixed;
+  top: 15%;
   background-color: white;
+  border-right: dashed var(--primary-color) 3px;
+  z-index: 1;
 }
 .page-container {
   height: 100%;
   width: 100%;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: 15vh;
-  left: 80px;
-  border-left: dashed var(--primary-color) 3px;
 }
 
 @media only screen and (max-width: 500px) {
   .bar-project-status {
     height: 8vh;
   }
+  .page-side {
+    height: 10%;
+  }
   .page-wrap {
-    height: 87vh;
+    flex-direction: column;
   }
   .nav-project {
     width: 100%;
     height: 10%;
+    top: 13%;
+    border-right: dashed var(--primary-color) 0px;
+    border-bottom: dashed var(--primary-color) 3px;
   }
   .page-container {
-    top: 21.7vh;
+    top: 0vh;
+    height: 100%;
     left: 0px;
     border-left: 0px;
     border-top: dashed var(--primary-color) 3px;

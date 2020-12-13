@@ -95,13 +95,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   min-width: 200px;
   max-width: 300px;
   border-radius: 5px;
-  border: 2px var(--secondary-color) dashed;
+  border: 2px var(--secondary-color) double;
+  background-color: white;
 }
 .card--primary {
-  border: 2px var(--primary-color) dashed;
+  border: 2px var(--primary-color) double;
+  box-shadow: 5px 5px 2px var(--primaryDark-color);
 }
 .block-btn {
   display: flex;
@@ -109,9 +112,11 @@
   justify-content: space-between;
 }
 .page {
-  display: flex;
-  flex-direction: row;
-  /* background-color: black; */
+  position: relative;
+  min-height: 85vh;
   height: 100%;
   width: 100%;
+}
+.page-top-plus {
+  top: 15vh;
 }

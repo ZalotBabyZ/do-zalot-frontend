@@ -6,4 +6,4 @@ const ValidateEmail = (mail) => {
   return false;
 };
 
-export default { mail };
+export default { ValidateEmail };

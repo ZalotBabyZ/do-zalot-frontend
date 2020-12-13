@@ -46,11 +46,11 @@ function InputField(props) {
       }}
     >
       <div className="input-field">
-        <label className="input-label" for={name}>
+        <label className={`input-label ${props.primaryColor ? 'input-label--primary' : null}`} for={name}>
           {label}
         </label>
         <input
-          className={`input-box ${
+          className={`input-box ${props.primaryColor ? 'input-box--primary' : null} ${
             value && !alertMsg ? 'input-value--validated' : value && alertMsg ? 'input-value--alert' : null
           }`}
           value={value}

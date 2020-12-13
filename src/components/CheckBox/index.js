@@ -31,12 +31,18 @@ function CheckBox(props) {
           alignItems: 'center',
         }}
       >
-        {props.label ? <div className="checkBox-label">{props.label}</div> : null}
+        {props.label ? (
+          <div className={`checkBox-label ${props.primaryColor ? 'checkBox-label--primary' : null}`}>{props.label}</div>
+        ) : null}
         <div style={{ display: 'flex', flexFlow: 'row wrap' }}>
           {props.type === 'radio' ? (
             choice.map((item) => {
               return (
-                <label className="checked-container" for={item.id} style={{ width: props.choiceWidth }}>
+                <label
+                  className={`checked-container ${props.primaryColor ? 'checked-container--primary' : null}`}
+                  for={item.id}
+                  style={{ width: props.choiceWidth }}
+                >
                   <input
                     className="checked-inputCheckbox"
                     id={item.id}
@@ -45,7 +51,7 @@ function CheckBox(props) {
                     checked={props.value[props.name] === item.id}
                     onChange={(e) => props.setValue({ ...props.value, [props.name]: item.id })}
                   />
-                  <span className="checkmark"></span>
+                  <span className={`checkmark ${props.primaryColor ? 'checkmark--primary' : null}`}></span>
                   <span className="checked-label"> {item.label} </span>
                 </label>
               );

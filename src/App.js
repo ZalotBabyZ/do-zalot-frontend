@@ -1,48 +1,23 @@
-import { useState } from 'react';
 import './App.css';
-import InputField from './components/InputField';
-import CheckBox from './components/CheckBox';
+import { useState } from 'react';
+import PrivateRoutes from './containers/PrivateRoutes';
+import LocalStorage from './services/localStorage';
+import UserContext from './context/UserContext';
 
 function App() {
-  const [value, setValue] = useState({});
-  const [validate, setValidate] = useState({});
-
-  const valueGet = (fieldValue, field, isAlert) => {
-    setValue({ ...value, [field]: fieldValue });
-    isAlert ? setValidate({ ...validate, [field]: false }) : setValidate({ ...validate, [field]: true });
-  };
+  const [role, setRole] = useState(LocalStorage.getUser().role);
+  const [vip, setVip] = useState(LocalStorage.getUser().userVip);
+  const [projectList, setProjectList] = useState(LocalStorage.getUser().userProject);
+  const [username, setUsername] = useState(LocalStorage.getUser().username);
+  // const [page, setPage] = useState({ url: '/' });
 
   return (
-    <div className="App">
-      <div className="card-submit">
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <InputField
-            name="PhoneNumber"
-            label="เบอร์โทร"
-            type="tel"
-            getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
-            format="number"
-            maxLength={10}
-            minLength={9}
-            need={true}
-            width="40%"
-          />
-          <CheckBox
-            type="radio"
-            name="gender"
-            boxWidth="40%"
-            choiceWidth="40%"
-            choice={[
-              { id: 'male', label: 'ชาย' },
-              { id: 'female', label: 'หญิง' },
-            ]}
-            value={value}
-            setValue={setValue}
-            label="เพศ"
-          />
-        </div>
-        <button className="btn-submit"> ส่งข้อมูล </button>
-      </div>
+    <div className="App" style={{ width: '100vw' }}>
+      <UserContext.Provider value={{ username, setUsername, vip, setVip, projectList, setProjectList }}>
+        {/* <PageContext.Provider value={{ page, setPage }}> */}
+        <PrivateRoutes role={role} setRole={setRole} />
+        {/* </PageContext.Provider> */}
+      </UserContext.Provider>
     </div>
   );
 }

@@ -17,7 +17,9 @@
   -ms-user-select: none;
   user-select: none;
 }
-
+.checked-container--primary {
+  color: var(--primaryDarkest-color);
+}
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
@@ -28,15 +30,23 @@
   border: 2px dashed var(--secondaryDarkest-color);
   border-radius: 50%;
 }
-
+.checkmark--primary {
+  border: 2px dashed var(--primaryDarkest-color);
+}
 /* On mouse-over, add a grey background color */
 .checked-container:hover input ~ .checkmark {
   background-color: var(--secondary-color);
+}
+.checked-container:hover input ~ .checkmark--primary {
+  background-color: var(--primary-color);
 }
 
 /* When the checkbox is checked, add a blue background */
 .checked-container input:checked ~ .checkmark {
   background-color: var(--secondaryBright-color);
+}
+.checked-container input:checked ~ .checkmark--primary {
+  background-color: var(--primaryBright-color);
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -77,4 +87,7 @@
   font-size: 20px;
   color: var(--secondaryDarkest-color);
   font-family: thaisans_neuesemi_bold;
+}
+.checkBox-label--primary {
+  color: var(--primaryDarkest-color);
 }

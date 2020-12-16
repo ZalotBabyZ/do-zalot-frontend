@@ -4,78 +4,90 @@
   width: 100vw;
   height: 100vh;
 }
-.nav-bar {
+
+.nav-head {
   width: 100vw;
-  height: 5vh;
+  height: 15vh;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+.page-head {
+  height: 15vh;
+  width: 100%;
+}
+.nav-bar {
+  width: 100%;
+  height: 30%;
   background-color: var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  z-index: 3;
 }
 .bar-project-status {
-  width: 100vw;
-  height: 10vh;
-  position: fixed;
-  top: 5%;
+  width: 100%;
+  height: 70%;
   background-color: var(--primaryBrightest-color);
   display: flex;
   justify-content: center;
   align-items: center;
   border-bottom: 3px dashed var(--primary-color);
-  z-index: 2;
 }
-.page-head {
-  height: 15vh;
-}
+
 .page-wrap {
   display: flex;
   flex-direction: row;
-}
-.page-side {
-  width: 80px;
+  position: absolute;
+  top: 15vh;
+  width: 100%;
 }
 .nav-project {
   width: 80px;
   height: 85vh;
   position: fixed;
-  top: 15%;
+  top: 15vh;
+  display: flex;
+  flex-direction: column;
   background-color: white;
   border-right: dashed var(--primary-color) 3px;
   z-index: 1;
 }
+.page-side {
+  width: 80px;
+  height: 85vh;
+}
 .page-container {
   height: 100%;
   width: 100%;
-  position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 @media only screen and (max-width: 500px) {
-  .bar-project-status {
-    height: 8vh;
+  .nav-head {
+    height: 12vh;
   }
-  .page-side {
-    height: 10%;
+  .page-head {
+    height: 12vh;
   }
   .page-wrap {
     flex-direction: column;
+    top: 12vh;
   }
   .nav-project {
     width: 100%;
-    height: 10%;
-    top: 13%;
+    height: 80px;
+    top: 12vh;
+    flex-direction: row;
     border-right: dashed var(--primary-color) 0px;
     border-bottom: dashed var(--primary-color) 3px;
   }
-  .page-container {
-    top: 0vh;
-    height: 100%;
-    left: 0px;
-    border-left: 0px;
-    border-top: dashed var(--primary-color) 3px;
+  .page-side {
+    height: 80px;
   }
 }

@@ -25,7 +25,7 @@ function InputField(props) {
         msg += value.length > props.maxLength ? `${pre}ต้องไม่เกิน ${props.maxLength} ตัวอักษร` : '';
       }
     } else {
-      props.need ? (msg = 'คุณต้องกรอกช่องนี้') : (msg = '');
+      msg = props.need ? 'คุณต้องกรอกช่องนี้' : (msg = '');
     }
     setAlertMsg(msg);
     getValue(value, name, msg);

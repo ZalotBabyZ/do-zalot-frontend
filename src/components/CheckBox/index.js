@@ -17,6 +17,7 @@ function CheckBox(props) {
       style={{
         width: props.boxWidth,
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         minWidth: '187px',
@@ -26,7 +27,7 @@ function CheckBox(props) {
         style={{
           width: '80%',
           display: 'flex',
-          flexDirection: 'column',
+          flexFlow: 'row wrap',
           justifyContent: 'flex-start',
           alignItems: 'center',
         }}
@@ -59,7 +60,7 @@ function CheckBox(props) {
           ) : props.choice ? (
             choice.map((item) => {
               return (
-                <label className="checked-container" for={item.id} style={{ width: props.width }}>
+                <label className="checked-container" for={item.id} style={{ width: props.choiceWidth }}>
                   <input
                     className="checked-inputCheckbox"
                     id={item.id}
@@ -81,7 +82,7 @@ function CheckBox(props) {
               );
             })
           ) : (
-            <label className="checked-container" for={props.name} style={{ width: props.width }}>
+            <label className="checked-container" for={props.name} style={{ width: props.choiceWidth }}>
               <input
                 className="checked-inputCheckbox"
                 id={props.name}

@@ -1,12 +1,13 @@
-import React from 'react';
+import { useState, useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import permissionList from '../config/roles.js';
 import Layout from './Layout';
 import NotFound from '../pages/NotFound';
+import UserContext from '../context/UserContext';
 
-function PrivateRoutes(props) {
-  const role = props.role || 'guest';
-  const pageList = permissionList[role];
+function PrivateRoutes() {
+  const userContext = useContext(UserContext);
+  const pageList = permissionList[userContext.role];
 
   //   console.log(permissionList);
 
@@ -14,13 +15,13 @@ function PrivateRoutes(props) {
     <Switch>
       {pageList.map((page) => (
         <Route exact path={page.url}>
-          <Layout role={role} setRole={props.setRole} page={page.url}>
-            <page.page setRole={props.setRole} />
+          <Layout page={page.url}>
+            <page.page />
           </Layout>
         </Route>
       ))}
       <Route path="*">
-        <Layout role={role} setRole={props.setRole} page="notFound">
+        <Layout page="notFound">
           <NotFound />
         </Layout>
       </Route>

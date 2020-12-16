@@ -1,7 +1,7 @@
 .page-register {
   width: 100%;
   height: 100%;
-  background-color: var(--secondaryBright-color);
+  background-color: var(--primaryBright-color);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -9,8 +9,6 @@
   position: relative;
 }
 .card-register {
-  margin: 20px;
-  padding: 20px;
   min-width: 50%;
   min-height: 30%;
 }

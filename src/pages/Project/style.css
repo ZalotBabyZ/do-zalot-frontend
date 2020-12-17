@@ -1,0 +1,84 @@
+.card-box {
+  width: 300px;
+}
+.header-box {
+  width: 100%;
+  filter: contrast(80%) opacity(80%);
+  color: white;
+  font-family: thaisans_neuesemi_bold;
+  font-size: 20px;
+}
+.box--hover {
+  display: none;
+}
+.card-box:hover .box--hover {
+  display: inline;
+}
+.list-block {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+.list-item {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.list-todo {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+.list-description {
+  display: none;
+}
+.list-description-icon:hover .list-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0px;
+  width: 100%;
+  background-color: var(--secondaryBrightest-color);
+  border: 3px dashed var(--secondary-color);
+  z-index: 2;
+}
+.list-action {
+  display: none;
+}
+.list-action-icon--hover {
+  display: none;
+}
+.list-action-icon--normal {
+  display: flex;
+}
+.list-action-icon:hover .list-action-icon--hover {
+  display: flex;
+}
+.list-action-icon:hover .list-action-icon--normal {
+  display: none;
+}
+.list-action-icon:hover .list-action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0px;
+  width: 100%;
+  background-color: var(--secondaryBrightest-color);
+  border: 3px dashed var(--secondary-color);
+  z-index: 2;
+}
+@media only screen and (min-width: 500px) {
+  .page-project {
+    flex-wrap: wrap;
+    height: 85vh;
+  }
+}

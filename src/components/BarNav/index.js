@@ -3,46 +3,40 @@ import './style.css';
 import { useHistory } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import LocalStorageService from '../../services/localStorage';
+import SelectProjectContext from '../../context/SelectProjectContext';
 
 function BarNav({ page }) {
   const history = useHistory();
   const userContext = useContext(UserContext);
+  const selectProjectContext = useContext(SelectProjectContext);
   const [activeLogout, setActiveLogout] = useState(false);
-  const navList =
-    userContext.role === 'guest'
-      ? [
-          { page: 'FAQ', url: '/faq' },
-          { page: 'CONTACT', url: '/contact' },
-          { page: 'REGISTER', url: '/register' },
-          { page: 'LOGIN', url: '/' },
-        ]
-      : [
-          { page: userContext.username, url: '' },
-          { page: 'FAQ', url: '/faq' },
-          { page: 'CONTACT', url: '/contact' },
-          { page: 'NEW_PROJECT', url: '/register' },
-          { page: 'DASHBOARD', url: '/' },
-        ];
+  const navList = userContext.user
+    ? [
+        { page: userContext.user.username, url: '' },
+        { page: 'FAQ', url: '/faq' },
+        { page: 'CONTACT', url: '/contact' },
+        { page: 'PROJECT', url: '/project' },
+        { page: 'DASHBOARD', url: '/' },
+      ]
+    : [
+        { page: 'FAQ', url: '/faq' },
+        { page: 'CONTACT', url: '/contact' },
+        { page: 'REGISTER', url: '/register' },
+        { page: 'LOGIN', url: '/' },
+      ];
   const navBtnWidth = userContext.role === 'guest' ? '25%' : '20%';
   const logoutHandler = () => {
     LocalStorageService.clearToken();
     userContext.setRole('guest');
+    setActiveLogout(false);
     history.push('/');
-    // window.location.reload();
   };
+  console.log(!!selectProjectContext.project);
   return (
     <div className="container-bar-nav">
       <div className="nav-bar-block">
         {navList.map((pages) =>
-          pages.page !== userContext.username ? (
-            <button
-              className={`nav-list ${pages.url === page ? 'nav-list-active' : null}`}
-              style={{ width: navBtnWidth }}
-              onClick={() => history.push(pages.url)}
-            >
-              {pages.page}
-            </button>
-          ) : (
+          userContext.user && pages.page === userContext.user.username ? (
             <button
               className="nav-list"
               style={{ width: navBtnWidth }}
@@ -51,6 +45,23 @@ function BarNav({ page }) {
               onClick={logoutHandler}
             >
               {activeLogout ? 'LOGOUT' : pages.page}
+            </button>
+          ) : pages.url === '/project' ? (
+            <button
+              className={`nav-list ${pages.url === page ? 'nav-list-active' : null}`}
+              style={{ width: navBtnWidth }}
+              disabled={!selectProjectContext.project}
+              onClick={() => history.push(pages.url)}
+            >
+              {pages.page}
+            </button>
+          ) : (
+            <button
+              className={`nav-list ${pages.url === page ? 'nav-list-active' : null}`}
+              style={{ width: navBtnWidth }}
+              onClick={() => history.push(pages.url)}
+            >
+              {pages.page}
             </button>
           )
         )}

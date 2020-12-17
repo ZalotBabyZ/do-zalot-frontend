@@ -8,23 +8,20 @@ import SelectProjectContext from './context/SelectProjectContext';
 
 function App() {
   const [role, setRole] = useState(LocalStorage.getUser().role);
-  const [username, setUsername] = useState(LocalStorage.getUser().username);
-  const [vip, setVip] = useState(LocalStorage.getUser().userVip);
+  const [user, setUser] = useState(LocalStorage.getUser().user);
   const [userProject, setUserProject] = useState(LocalStorage.getUser().userProject);
   const [selectProject, setSelectProject] = useState(JSON.parse(localStorage.getItem('selectProject')));
   // const [selectProject, setSelectProject] = useState();
   const [hoverProject, setHoverProject] = useState(0);
 
   useEffect(() => {
-    setUsername(LocalStorage.getUser().username);
-    setVip(LocalStorage.getUser().userVip);
+    setUser(LocalStorage.getUser().user);
     setUserProject(LocalStorage.getUser().userProject);
-    setSelectProject(0);
+    setSelectProject(JSON.parse(localStorage.getItem('selectProject')));
   }, [role]);
-
   return (
     <div className="App" style={{ width: '100vw' }}>
-      <UserContext.Provider value={{ role, setRole, username, setUsername, vip, setVip, userProject, setUserProject }}>
+      <UserContext.Provider value={{ role, setRole, user, setUser, userProject, setUserProject }}>
         <SelectProjectContext.Provider value={{ project: selectProject, setProject: setSelectProject }}>
           <HoverProjectContext.Provider value={{ project: hoverProject, setProject: setHoverProject }}>
             <PrivateRoutes />

@@ -97,7 +97,7 @@
   align-items: center;
   justify-content: center;
   min-width: 200px;
-  max-width: 300px;
+  max-width: 80%;
   border-radius: 5px;
   border: 2px var(--secondary-color) double;
   background-color: white;

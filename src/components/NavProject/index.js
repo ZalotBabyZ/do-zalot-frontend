@@ -17,8 +17,12 @@ function NavProject() {
   const selectProject = (ind) => {
     selectProjectContext.setProject(userContext.userProject.projectList[ind]);
     localStorage.setItem('selectProject', JSON.stringify(userContext.userProject.projectList[ind]));
-    window.location.reload();
+    history.push('/project');
   };
+
+  // const top =
+  // console.log(window.innerHeight);
+  // console.log(userContext.userProject.projectCount);
 
   return (
     <div className="nav-project">

@@ -2,23 +2,30 @@ import { useState, useContext, useEffect } from 'react';
 import './style.css';
 import SelectProjectContext from '../../context/SelectProjectContext';
 import HoverProjectContext from '../../context/HoverProjectContext';
+import UserContext from '../../context/UserContext';
 
 function BarProject(props) {
   const selectProjectContext = useContext(SelectProjectContext);
   const hoverProjectContext = useContext(HoverProjectContext);
+  const userContext = useContext(UserContext);
   //เดี๋ยวอันนี้รอข้อมูลจากbackend ลบ แล้วใช้แค่ props.xxx ไม่มีค่าdefault
   const initProjPercent = selectProjectContext.project
     ? selectProjectContext.project.totalProjectScore === 0
       ? 0
-      : (selectProjectContext.project.doneProjectScore / selectProjectContext.project.totalProjectScore) * 100
+      : (
+          (selectProjectContext.project.doneProjectScore / selectProjectContext.project.totalProjectScore) *
+          100
+        ).toFixed(2)
     : '';
   const initUserPercent = selectProjectContext.project
     ? selectProjectContext.project.totalUserScore === 0
       ? 0
-      : (selectProjectContext.project.doneUserScore / selectProjectContext.project.totalUserScore) * 100
+      : ((selectProjectContext.project.doneUserScore / selectProjectContext.project.totalUserScore) * 100).toFixed(2)
     : '';
-  const projectColor = props.projectColor ? props.projectColor : 'var(--thirdary-color)';
-  const userColor = props.userColor ? props.userColor : 'var(--secondary-color)';
+  const initProjectColor = selectProjectContext.project
+    ? selectProjectContext.project.projectColor
+    : 'var(--thirdary-color)';
+  const userColor = userContext.user ? userContext.user.userColor : 'var(--secondary-color)';
   const initProjectName = selectProjectContext.project
     ? selectProjectContext.project.project_name
     : 'ยังไม่ได้เลือก project';
@@ -26,6 +33,7 @@ function BarProject(props) {
   const [projectPercent, setProjectPercent] = useState(initProjPercent);
   const [userPercent, setUserPercent] = useState(initUserPercent);
   const [projectName, setProjectName] = useState(initProjectName);
+  const [projectColor, setProjectColor] = useState(initProjectColor);
 
   useEffect(() => {
     if (hoverProjectContext.project !== 0) {
@@ -33,18 +41,50 @@ function BarProject(props) {
         hoverProjectContext.project
           ? hoverProjectContext.project.totalProjectScore === 0
             ? 0
-            : (hoverProjectContext.project.doneProjectScore / hoverProjectContext.project.totalProjectScore) * 100
+            : (
+                (hoverProjectContext.project.doneProjectScore / hoverProjectContext.project.totalProjectScore) *
+                100
+              ).toFixed(2)
           : 0
       );
       setUserPercent(
         hoverProjectContext.project
           ? hoverProjectContext.project.totalUserScore === 0
             ? 0
-            : (hoverProjectContext.project.doneUserScore / hoverProjectContext.project.totalUserScore) * 100
+            : ((hoverProjectContext.project.doneUserScore / hoverProjectContext.project.totalUserScore) * 100).toFixed(
+                2
+              )
           : 0
       );
-      setProjectName(hoverProjectContext.project ? hoverProjectContext.project.project_name : 'ยังไม่ได้เลือก project');
+      setProjectName(hoverProjectContext.project ? hoverProjectContext.project.projectName : 'ยังไม่ได้เลือก project');
+      setProjectColor(hoverProjectContext.project ? hoverProjectContext.project.projectColor : 'var(--thirdary-color)');
     } else {
+      setProjectPercent(
+        selectProjectContext.project
+          ? selectProjectContext.project.totalProjectScore === 0
+            ? 0
+            : (
+                (selectProjectContext.project.doneProjectScore / selectProjectContext.project.totalProjectScore) *
+                100
+              ).toFixed(2)
+          : 0
+      );
+      setUserPercent(
+        selectProjectContext.project
+          ? selectProjectContext.project.totalUserScore === 0
+            ? 0
+            : (
+                (selectProjectContext.project.doneUserScore / selectProjectContext.project.totalUserScore) *
+                100
+              ).toFixed(2)
+          : 0
+      );
+      setProjectName(
+        selectProjectContext.project ? selectProjectContext.project.projectName : 'ยังไม่ได้เลือก project'
+      );
+      setProjectColor(
+        selectProjectContext.project ? selectProjectContext.project.projectColor : 'var(--thirdary-color)'
+      );
     }
   }, [hoverProjectContext]);
 

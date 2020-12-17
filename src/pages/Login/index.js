@@ -71,8 +71,7 @@ function Login() {
           />
           <div className="block-btn">
             <button className="btn-submit btn--primary" onClick={loginHandler}>
-              {' '}
-              LOGIN{' '}
+              LOGIN
             </button>
           </div>
           <div style={{ width: '100%', height: '30px' }}></div>

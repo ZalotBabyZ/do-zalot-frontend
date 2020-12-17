@@ -14,10 +14,12 @@ const clearToken = () => {
 
 const getUser = () => {
   if (getToken()) {
+    const userId = jwt_decode(localStorage.getItem('ACCESS_TOKEN')).userId;
     const username = jwt_decode(localStorage.getItem('ACCESS_TOKEN')).username;
     const userVip = jwt_decode(localStorage.getItem('ACCESS_TOKEN')).userVip;
+    const userColor = jwt_decode(localStorage.getItem('ACCESS_TOKEN')).userColor;
     const userProject = JSON.parse(localStorage.getItem('userProject'));
-    return { role: 'user', username, userVip, userProject };
+    return { role: 'user', user: { userId, username, userVip, userColor }, userProject };
   }
   return { role: 'guest' };
 };

@@ -1,7 +1,7 @@
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
-import NewProject from '../pages/NewProject';
+import Project from '../pages/Project';
 import FAQ from '../pages/FAQ';
 import Contact from '../pages/Contact';
 
@@ -11,9 +11,9 @@ const allPages = {
     url: '/',
     page: Dashboard,
   },
-  newProject: {
-    url: '/newProject',
-    page: NewProject,
+  project: {
+    url: '/project',
+    page: Project,
   },
   // path ของ guest
   login: {
@@ -37,7 +37,7 @@ const allPages = {
 
 const permissionList = {
   guest: [allPages.login, allPages.register, allPages.faq, allPages.contact],
-  user: [allPages.dashboard, allPages.newProject, allPages.faq, allPages.contact],
+  user: [allPages.dashboard, allPages.project, allPages.faq, allPages.contact],
 };
 
 export default permissionList;

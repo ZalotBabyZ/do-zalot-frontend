@@ -12,6 +12,7 @@ import {
   DownCircleOutlined,
   EditOutlined,
   CommentOutlined,
+  PlusCircleOutlined,
 } from '@ant-design/icons';
 import LocalStorageService from '../../services/localStorage';
 
@@ -56,12 +57,23 @@ function Project() {
       });
   }, [selectProjectContext.project.projectId]);
 
+  const setListStatus = (listId, status) => {
+    alert(listId + status);
+    //ส่ง listId  ไป backend patch
+  };
   return (
     <div className="page page-project" style={{ justifyContent: 'flex-start', padding: '10px' }}>
       {boxes.map((box, ind) => {
         const colorBorder = { borderColor: `${box.color ? box.color : 'var(--primary-color)'}` };
         const colorBackground = { backgroundColor: `${box.color ? box.color : 'var(--primary-color)'}` };
         const colorFont = { color: `${box.color ? box.color : 'var(--primaryDarkest-color)'}` };
+        const antdBtn = {
+          backgroundColor: 'white',
+          width: '25px',
+          height: '25px',
+          borderRadius: '50%',
+          color: `${box.color ? box.color : 'var(--primaryDarkest-color)'}`,
+        };
         return (
           <div className="card card-box" style={colorBorder}>
             <div className="header-box" style={colorBackground}>
@@ -94,6 +106,7 @@ function Project() {
                                     style={{
                                       color: `${box.color ? box.color : 'var(--secondaryDarkest-color)'}`,
                                     }}
+                                    onClick={() => setListStatus(list.id, status)}
                                   >
                                     {status}
                                   </button>
@@ -180,16 +193,13 @@ function Project() {
             )}
             <div className="footer-box" style={colorBackground}>
               {box.description}
-              <div
-                style={{
-                  backgroundColor: 'white',
-                  width: '25px',
-                  height: '25px',
-                  borderRadius: '50%',
-                  color: `${box.color ? box.color : 'var(--primaryDarkest-color)'}`,
-                }}
-              >
-                <EditOutlined />
+              <div style={{ display: 'flex', justifyContent: 'space-between', width: '60px' }}>
+                <div style={antdBtn}>
+                  <PlusCircleOutlined />
+                </div>
+                <div style={antdBtn}>
+                  <EditOutlined />
+                </div>
               </div>
             </div>
           </div>

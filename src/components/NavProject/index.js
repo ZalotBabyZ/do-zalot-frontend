@@ -29,12 +29,14 @@ function NavProject() {
       {userContext.userProject
         ? userContext.userProject.projectList.map((project, ind) => {
             return (
-              <div style={{ position: 'relative' }}>
+              <div
+                style={{ position: 'relative' }}
+                onClick={() => selectProject(ind)}
+                onMouseOver={() => hoverProjectContext.setProject(userContext.userProject.projectList[ind])}
+                onMouseLeave={() => hoverProjectContext.setProject(0)}
+              >
                 <div
                   className="nav-item"
-                  onClick={() => selectProject(ind)}
-                  onMouseOver={() => hoverProjectContext.setProject(userContext.userProject.projectList[ind])}
-                  onMouseLeave={() => hoverProjectContext.setProject(0)}
                   style={{ backgroundColor: `${project.projectColor ? project.projectColor : 'var(--primary-color)'}` }}
                 ></div>
                 <div

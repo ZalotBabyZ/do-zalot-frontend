@@ -20,7 +20,7 @@ function CheckBox(props) {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        minWidth: '187px',
+        minWidth: `${props.allowLessWidth ? props.boxWidth : '187px'}`,
       }}
     >
       <div
@@ -32,7 +32,7 @@ function CheckBox(props) {
           alignItems: 'center',
         }}
       >
-        {props.label ? (
+        {props.label && props.choice ? (
           <div className={`checkBox-label ${props.primaryColor ? 'checkBox-label--primary' : null}`}>{props.label}</div>
         ) : null}
         <div style={{ display: 'flex', flexFlow: 'row wrap' }}>
@@ -60,7 +60,11 @@ function CheckBox(props) {
           ) : props.choice ? (
             choice.map((item) => {
               return (
-                <label className="checked-container" for={item.id} style={{ width: props.choiceWidth }}>
+                <label
+                  className={`checked-container ${props.primaryColor ? 'checked-container--primary' : null}`}
+                  for={item.id}
+                  style={{ width: props.choiceWidth }}
+                >
                   <input
                     className="checked-inputCheckbox"
                     id={item.id}
@@ -76,7 +80,7 @@ function CheckBox(props) {
                       })
                     }
                   />
-                  <span className="checkmark"></span>
+                  <span className={`checkmark ${props.primaryColor ? 'checkmark--primary' : null}`}></span>
                   <span className="checked-label"> {item.label} </span>
                 </label>
               );
@@ -90,8 +94,15 @@ function CheckBox(props) {
                 checked={props.value[props.name]}
                 onChange={(e) => props.setValue({ ...props.value, [props.name]: e.target.checked })}
               />
-              <span className="checkmark"></span>
-              <span className="checked-label"> {props.label} </span>
+              <span className={`checkmark ${props.primaryColor ? 'checkmark--primary' : null}`}></span>
+              <span
+                className="checked-label"
+                style={{
+                  color: `${props.primaryColor ? 'var(--primaryDarkest-color)' : '(--secondaryDarkest-color)'}`,
+                }}
+              >
+                {props.label}
+              </span>
             </label>
           )}
         </div>

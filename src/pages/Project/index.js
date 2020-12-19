@@ -15,6 +15,7 @@ import {
   PlusCircleOutlined,
 } from '@ant-design/icons';
 import LocalStorageService from '../../services/localStorage';
+import ModalAddList from '../../components/ModalAddList';
 
 function Project() {
   const history = useHistory();
@@ -27,16 +28,13 @@ function Project() {
   const [teams, setTeams] = useState([]);
   const [right, setRight] = useState({});
   const [boxes, setBoxes] = useState([]);
+  const [addList, setAddList] = useState(null);
 
   const status = ['TODO', 'DOING', 'DONE'];
-
-  useEffect(() => {
+  const fetchProject = () => {
     axios
       .get(`projects/getProject?projectId=${selectProjectContext.project.projectId}`)
       .then((res) => {
-        notification.success({
-          description: selectProjectContext.project.projectName,
-        });
         let projectBox = res.data.boxes;
 
         projectBox = projectBox.sort(function (a, b) {
@@ -55,15 +53,40 @@ function Project() {
       .catch((err) => {
         console.log(err);
       });
+  };
+  useEffect(() => {
+    fetchProject();
   }, [selectProjectContext.project.projectId]);
 
-  const setListStatus = (listId, status) => {
-    alert(listId + status);
-    //ส่ง listId  ไป backend patch
+  const setListStatus = (listId, status, newBoxId) => {
+    axios
+      .patch('todos/updateStatus', { listId, status, newBoxId })
+      .then((res) => {
+        notification.success({
+          description: 'Already updated',
+        });
+        fetchProject();
+        console.log(boxes);
+      })
+      .catch((err) => {
+        console.log(err);
+        notification.error({
+          description: 'Update Not Success',
+        });
+      });
   };
+
+  const onAddList = (project_id, box_id, box_name, boxType) => {
+    const type = ['TODO', 'DOING', 'DONE'].includes(boxType) ? 'TODO' : boxType;
+    const status = ['TODO', 'DOING', 'DONE'].includes(boxType) ? boxType : 'NOTHING';
+    setAddList({ project_id, box_name, box_id, type, status, deadline: project.deadline });
+  };
+
   return (
     <div className="page page-project" style={{ justifyContent: 'flex-start', padding: '10px' }}>
-      {boxes.map((box, ind) => {
+      {addList ? <ModalAddList setAddList={setAddList} addList={addList} /> : null}
+
+      {boxes.map((box, boxInd) => {
         const colorBorder = { borderColor: `${box.color ? box.color : 'var(--primary-color)'}` };
         const colorBackground = { backgroundColor: `${box.color ? box.color : 'var(--primary-color)'}` };
         const colorFont = { color: `${box.color ? box.color : 'var(--primaryDarkest-color)'}` };
@@ -74,10 +97,11 @@ function Project() {
           borderRadius: '50%',
           color: `${box.color ? box.color : 'var(--primaryDarkest-color)'}`,
         };
+
         return (
           <div className="card card-box" style={colorBorder}>
             <div className="header-box" style={colorBackground}>
-              {box.name}
+              {box.box_name}
               <span className="box--hover"> [ {box.type} ] </span>
             </div>
             {box.Lists.length === 0 ? (
@@ -85,7 +109,7 @@ function Project() {
                 No list here
               </div>
             ) : (
-              box.Lists.map((list) => {
+              box.Lists.map((list, listInd) => {
                 return (
                   <div className="list-block" style={colorFont}>
                     <div className="list-todo" style={colorBorder}>
@@ -99,18 +123,47 @@ function Project() {
                         <div className="list-action" style={colorBackground}>
                           {box.type === 'NOTE'
                             ? null
-                            : status.map((status) => {
-                                return (
-                                  <button
-                                    className="list-status"
-                                    style={{
-                                      color: `${box.color ? box.color : 'var(--secondaryDarkest-color)'}`,
-                                    }}
-                                    onClick={() => setListStatus(list.id, status)}
-                                  >
-                                    {status}
-                                  </button>
-                                );
+                            : status.map((choice) => {
+                                const statusButton = {
+                                  color: `${box.color ? box.color : 'var(--secondaryDarkest-color)'}`,
+                                };
+                                return project.box && project.box[choice][0] ? (
+                                  project.box && project.box[choice][1] ? (
+                                    <button className="list-status" style={statusButton}>
+                                      {choice}
+                                      <div className="status-choice">
+                                        {project.box && project.box[choice][1]
+                                          ? project.box[choice].map((todoStatus) =>
+                                              todoStatus.name !== box.box_name ? (
+                                                <div
+                                                  className="status-choice"
+                                                  onClick={() => setListStatus(list.id, choice, todoStatus.id)}
+                                                >
+                                                  {todoStatus.name}
+                                                </div>
+                                              ) : null
+                                            )
+                                          : null}
+                                      </div>
+                                    </button>
+                                  ) : choice !== box.type ? (
+                                    <button
+                                      className="list-status"
+                                      style={statusButton}
+                                      onClick={() => setListStatus(list.id, choice, project.box[choice][0].id)}
+                                    >
+                                      {choice}
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className="list-status"
+                                      style={{ backgroundColor: 'grey', color: 'white', opacity: '20%' }}
+                                      disabled={true}
+                                    >
+                                      {choice}
+                                    </button>
+                                  )
+                                ) : null;
                               })}
                           <button
                             className="list-status"
@@ -174,8 +227,6 @@ function Project() {
                       <div className="list-assign">
                         {list.Assigns
                           ? list.Assigns.map((user) => {
-                              console.log(user.userStatus);
-                              // console.log(teams.filter((member) => member.id === user.id)[0].id);
                               const targetUser = teams.filter((member) => member.id === user.id)[0];
                               return user.userStatus === 'UNDERTAKE' && targetUser ? (
                                 <img
@@ -194,7 +245,10 @@ function Project() {
             <div className="footer-box" style={colorBackground}>
               {box.description}
               <div style={{ display: 'flex', justifyContent: 'space-between', width: '60px' }}>
-                <div style={antdBtn}>
+                <div
+                  style={antdBtn}
+                  onClick={() => onAddList(selectProjectContext.project.projectId, box.id, box.box_name, box.type)}
+                >
                   <PlusCircleOutlined />
                 </div>
                 <div style={antdBtn}>

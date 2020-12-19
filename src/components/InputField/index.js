@@ -3,8 +3,8 @@ import './style.css';
 
 function InputField(props) {
   const { name, type, label, getValue } = props;
-
-  const [value, setValue] = useState('');
+  const defaultValue = props.defaultValue ? props.defaultValue : '';
+  const [value, setValue] = useState(defaultValue);
   const [alertMsg, setAlertMsg] = useState('');
 
   useEffect(() => {
@@ -24,6 +24,10 @@ function InputField(props) {
         pre = msg ? ' และ' : '';
         msg += value.length > props.maxLength ? `${pre}ต้องไม่เกิน ${props.maxLength} ตัวอักษร` : '';
       }
+      if (props.minValue) {
+        pre = msg ? ' และ' : '';
+        msg += +value < props.minValue ? `${pre}ค่าต้องไม่ต่ำกว่า ${props.minValue}` : '';
+      }
     } else {
       msg = props.need ? 'คุณต้องกรอกช่องนี้' : (msg = '');
     }
@@ -42,7 +46,7 @@ function InputField(props) {
         justifyContent: 'center',
         alignContent: 'center',
         width: props.width,
-        minWidth: '187px',
+        minWidth: `${props.allowLessWidth ? props.width : '187px'}`,
       }}
     >
       <div className="input-field">

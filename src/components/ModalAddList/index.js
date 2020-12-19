@@ -1,15 +1,42 @@
 import { useState } from 'react';
 import InputField from '../../components/InputField';
 import CheckBox from '../../components/CheckBox';
+import axios from '../../config/axios';
+import { notification } from 'antd';
 
-function ModalAddList({ setAddList, addList }) {
+function ModalAddList({ setAddList, addList, fetchProject }) {
   const [value, setValue] = useState({ pin: 'notPin', score: 1 });
-  const [validate, setValidate] = useState({});
+  const [validate, setValidate] = useState({ list: false });
 
   const valueGet = (fieldValue, field, isAlert) => {
     setValue({ ...value, [field]: fieldValue });
     isAlert ? setValidate({ ...validate, [field]: false }) : setValidate({ ...validate, [field]: true });
   };
+
+  const disableBtn = () => {
+    for (let key in validate) {
+      if (!validate[key]) return true;
+    }
+    return false;
+  };
+
+  const createNewList = () => {
+    const body = { ...addList, ...value };
+    console.log(body);
+    axios
+      .post('todos/addNewList', body)
+      .then((res) => {
+        notification.success({
+          description: 'Already updated',
+        });
+        setAddList(null);
+        fetchProject();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
       <div className="modal">
@@ -92,7 +119,9 @@ function ModalAddList({ setAddList, addList }) {
           >
             BACK
           </button>
-          <button className="btn-submit btn--primary btn-submit-modal"> SAVE </button>
+          <button className="btn-submit btn--primary btn-submit-modal" disabled={disableBtn()} onClick={createNewList}>
+            SAVE
+          </button>
         </div>
       </div>
       <div className="modal-wrap"></div>

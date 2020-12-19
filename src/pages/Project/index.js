@@ -84,7 +84,7 @@ function Project() {
 
   return (
     <div className="page page-project" style={{ justifyContent: 'flex-start', padding: '10px' }}>
-      {addList ? <ModalAddList setAddList={setAddList} addList={addList} /> : null}
+      {addList ? <ModalAddList setAddList={setAddList} addList={addList} fetchProject={fetchProject} /> : null}
 
       {boxes.map((box, boxInd) => {
         const colorBorder = { borderColor: `${box.color ? box.color : 'var(--primary-color)'}` };

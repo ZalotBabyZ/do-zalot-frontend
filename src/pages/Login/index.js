@@ -12,7 +12,14 @@ function Login() {
   const history = useHistory();
   const userContext = useContext(UserContext);
   const [value, setValue] = useState({});
-  const [validate, setValidate] = useState({});
+  const [validate, setValidate] = useState({ password: false, username: false });
+
+  const disableBtn = () => {
+    for (let key in validate) {
+      if (!validate[key]) return true;
+    }
+    return false;
+  };
 
   const valueGet = (fieldValue, field, isAlert) => {
     setValue({ ...value, [field]: fieldValue });
@@ -70,7 +77,7 @@ function Login() {
             primaryColor={true}
           />
           <div className="block-btn">
-            <button className="btn-submit btn--primary" onClick={loginHandler}>
+            <button className="btn-submit btn--primary" onClick={loginHandler} disabled={disableBtn()}>
               LOGIN
             </button>
           </div>

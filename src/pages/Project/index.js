@@ -35,16 +35,7 @@ function Project() {
     axios
       .get(`projects/getProject?projectId=${selectProjectContext.project.projectId}`)
       .then((res) => {
-        let projectBox = res.data.boxes;
-
-        projectBox = projectBox.sort(function (a, b) {
-          return a.order - b.order;
-        });
-        projectBox = projectBox.sort(function (b, a) {
-          return a.projectPin - b.projectPin;
-        });
-
-        setBoxes(projectBox);
+        setBoxes(res.data.boxes);
         setUser(res.data.user);
         setTeams(res.data.teams);
         setProject(res.data.project);

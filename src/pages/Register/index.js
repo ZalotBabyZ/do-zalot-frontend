@@ -4,8 +4,12 @@ import InputField from '../../components/InputField';
 import CheckBox from '../../components/CheckBox';
 import './style.css';
 import { ValidateEmail } from '../../services/validation';
+import axios from '../../config/axios';
+import { notification } from 'antd';
+import { useHistory } from 'react-router-dom';
 
 function Register() {
+  const history = useHistory();
   const [value, setValue] = useState({});
   const [validate, setValidate] = useState({
     user_color: false,
@@ -38,6 +42,24 @@ function Register() {
     isAlert ? setValidate({ ...validate, [field]: false }) : setValidate({ ...validate, [field]: true });
   };
 
+  const register = () => {
+    axios
+      .post('/users/register', value)
+      .then((res) => {
+        notification.success({
+          description: 'Register Success',
+        });
+
+        history.push('/');
+      })
+      .catch((err) => {
+        console.log(err);
+        notification.error({
+          description: 'Register Not Success',
+        });
+      });
+  };
+
   return (
     <div className="page">
       <div className="page-register" style={{ minHeight: '85vh' }}>
@@ -59,7 +81,7 @@ function Register() {
           <InputField
             name="password"
             label="รหัสผ่าน:"
-            type="text"
+            type="password"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
             minLength={8}
@@ -70,7 +92,7 @@ function Register() {
           <InputField
             name="confirmPassword"
             label="กรอกรหัสผ่านอีกครั้ง:"
-            type="text"
+            type="password"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
             minLength={8}
@@ -78,6 +100,9 @@ function Register() {
             width="80%"
             primaryColor={true}
           />
+          {!value.confirmPassword ? null : validate.passwordConfirm ? null : (
+            <div className="msg-alert">รหัสไม่ตรงกัน</div>
+          )}
           <InputField
             name="firstname"
             label="ชื่อ:"
@@ -146,7 +171,7 @@ function Register() {
           />
 
           <div className="block-btn">
-            <button className="btn-submit btn--primary" disabled={disableBtn()}>
+            <button className="btn-submit btn--primary" disabled={disableBtn()} onClick={register}>
               REGISTER
             </button>
           </div>

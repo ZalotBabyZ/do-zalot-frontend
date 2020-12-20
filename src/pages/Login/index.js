@@ -68,7 +68,7 @@ function Login() {
           <InputField
             name="password"
             label="Password:"
-            type="text"
+            type="password"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
             minLength={8}

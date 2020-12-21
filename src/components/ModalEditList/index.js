@@ -6,11 +6,10 @@ import { notification } from 'antd';
 import './style.css';
 
 function ModalEditList({ setEditList, editList, teams, fetchProject }) {
-  // const [value, setValue] = useState({});
   const [value, setValue] = useState({});
-  console.log(editList);
   const [validate, setValidate] = useState({ password: false, username: false });
   const [editedList, setEditedList] = useState(false);
+  const [editComment, setEditComment] = useState(false);
 
   const valueGet = (fieldValue, field, isAlert) => {
     setValue({ ...value, [field]: fieldValue });
@@ -19,7 +18,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
 
   const fetchList = () => {
     axios
-      .get(`todos/getEditList/${editList.list_id}`)
+      .get(`todos/getEditList/${editList.id}`)
       .then((res) => {
         setEditList(res.data);
         setValue({
@@ -48,7 +47,6 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
   };
 
   const sendEditList = () => {
-    console.log(editList.id);
     axios
       .patch('todos/editList', { ...value, list_id: editList.id })
       .then((res) => {
@@ -65,7 +63,22 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
         });
       });
   };
-  const sendComment = () => {};
+  const sendComment = () => {
+    axios
+      .post('comments/addNewComment', { comment: value.newComment, list_id: editList.id })
+      .then((res) => {
+        fetchList();
+        // fetchProject();
+      })
+      .catch((err) => {
+        console.log(err);
+        notification.error({
+          description: 'Comment Not Success',
+        });
+      });
+  };
+
+  const onEditComment = () => {};
 
   const btnStyle = { width: '30%', minWidth: '60px' };
   return (
@@ -203,7 +216,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                   width="70%"
                 />
                 <button className="btn-submit" style={btnStyle} onClick={sendComment}>
-                  SEND
+                  CREATE
                 </button>
               </div>
             )}
@@ -212,8 +225,48 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
             {editList.Comments
               ? editList.Comments.map((comment) => {
                   const userPost = teams.filter((member) => member.id === comment.user_id)[0];
-                  return (
-                    <div style={{ borderTop: '3px var(--secondary-color) solid', width: '90%', textAlign: 'left' }}>
+                  const btnEditComment = {
+                    width: '40px',
+                    height: '30%',
+                    borderColor: 'var(--secondary-color)',
+                    color: 'var(--secondaryDarkest-color)',
+                    backgroundColor: 'white',
+                  };
+                  return editComment && editComment.id === comment.id ? (
+                    <div style={{ display: 'flex' }}>
+                      <InputField
+                        name="editComment"
+                        label="Edit comment:"
+                        type="text"
+                        getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
+                        format="text"
+                        maxLength={256}
+                        minLength={3}
+                        width="70%"
+                      />
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: '20%',
+                          justifyContent: 'flex-end',
+                        }}
+                      >
+                        <button style={btnEditComment} onClick={() => setEditComment(false)}>
+                          BACK
+                        </button>
+                        <button style={btnEditComment} onClick={onEditComment}>
+                          EDIT
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        setEditComment({ id: comment.id, content: '', list_id: comment.list_id });
+                      }}
+                      style={{ borderTop: '3px var(--secondary-color) solid', width: '90%', textAlign: 'left' }}
+                    >
                       <div>{comment.content}</div>
                       <div className="list-mark" style={{ color: 'var(--secondary-color)' }}>
                         <div className="list-deadline">{userPost.User.username}</div>

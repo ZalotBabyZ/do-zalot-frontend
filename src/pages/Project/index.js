@@ -75,8 +75,8 @@ function Project() {
     const status = ['TODO', 'DOING', 'DONE'].includes(boxType) ? boxType : 'NOTHING';
     setAddList({ project_id, box_name, box_id, type, status, deadline: project.deadline });
   };
-  const onEditList = (list_id) => {
-    setEditList({ list_id });
+  const onEditList = (id) => {
+    setEditList({ id });
   };
 
   return (

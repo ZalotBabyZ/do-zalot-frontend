@@ -16,6 +16,7 @@ import {
 } from '@ant-design/icons';
 import LocalStorageService from '../../services/localStorage';
 import ModalAddList from '../../components/ModalAddList';
+import ModalEditList from '../../components/ModalEditList';
 
 function Project() {
   const history = useHistory();
@@ -29,6 +30,7 @@ function Project() {
   const [right, setRight] = useState({});
   const [boxes, setBoxes] = useState([]);
   const [addList, setAddList] = useState(null);
+  const [editList, setEditList] = useState(null);
 
   const status = ['TODO', 'DOING', 'DONE'];
   const fetchProject = () => {
@@ -45,6 +47,7 @@ function Project() {
         console.log(err);
       });
   };
+
   useEffect(() => {
     fetchProject();
   }, [selectProjectContext.project.projectId]);
@@ -72,10 +75,16 @@ function Project() {
     const status = ['TODO', 'DOING', 'DONE'].includes(boxType) ? boxType : 'NOTHING';
     setAddList({ project_id, box_name, box_id, type, status, deadline: project.deadline });
   };
+  const onEditList = (list_id) => {
+    setEditList({ list_id });
+  };
 
   return (
     <div className="page page-project" style={{ justifyContent: 'flex-start', padding: '10px' }}>
       {addList ? <ModalAddList setAddList={setAddList} addList={addList} fetchProject={fetchProject} /> : null}
+      {editList ? (
+        <ModalEditList setEditList={setEditList} editList={editList} teams={teams} fetchProject={fetchProject} />
+      ) : null}
 
       {boxes.map((box, boxInd) => {
         const colorBorder = { borderColor: `${box.color ? box.color : 'var(--primary-color)'}` };
@@ -162,6 +171,7 @@ function Project() {
                               borderColor: `${box.color ? box.color : 'var(--secondaryDarkest-color)'}`,
                               color: `${box.color ? box.color : 'var(--secondaryDarkest-color)'}`,
                             }}
+                            onClick={() => onEditList(list.id)}
                           >
                             <EditOutlined />
                           </button>
@@ -191,7 +201,7 @@ function Project() {
                                   return a > b ? a : b;
                                 })
                               : 'No comment'}
-                            <div>
+                            <div onClick={() => onEditList(list.id)}>
                               <CommentOutlined /> {list.Comments.length}
                             </div>
                           </div>

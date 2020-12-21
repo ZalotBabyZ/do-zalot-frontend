@@ -1,0 +1,32 @@
+.modal-body-2col {
+  flex-direction: row;
+  /* overflow-y: auto; */
+}
+.modal-todo {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+}
+.modal-comment {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  width: 50%;
+  overflow-y: auto;
+  height: 100%;
+}
+@media only screen and (max-width: 500px) {
+  .modal-body-2col {
+    flex-direction: column;
+  }
+  .modal-todo {
+    width: 100%;
+  }
+  .modal-comment {
+    width: 100%;
+  }
+}

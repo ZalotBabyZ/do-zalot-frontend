@@ -103,8 +103,8 @@ function BarProject(props) {
           <div
             className="percent-on-color"
             style={{
-              color: `${projectPercent < 40 ? projectColor : 'white'}`,
-              right: `${projectPercent < 40 ? 0 : null}`,
+              color: projectColor,
+              right: `${projectPercent < 40 ? 0 : '-40px'}`,
             }}
           >{`${projectPercent}%`}</div>
         </div>
@@ -117,7 +117,7 @@ function BarProject(props) {
           <div className="bar-project-percent" style={{ backgroundColor: userColor, width: `${userPercent}%` }}></div>
           <div
             className="percent-on-color"
-            style={{ color: `${userPercent < 40 ? userColor : 'white'}`, right: `${userPercent < 40 ? 0 : null}` }}
+            style={{ color: userColor, right: `${projectPercent < 40 ? 0 : '-40px'}` }}
           >{`${userPercent}%`}</div>
         </div>
       </div>

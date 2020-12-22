@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import InputField from '../../components/InputField';
 import axios from '../../config/axios';
-import { EditOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import { EditOutlined, UserSwitchOutlined, SendOutlined, CloseOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 import './style.css';
 import UserContext from '../../context/UserContext';
@@ -13,6 +13,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
   const [editedList, setEditedList] = useState(false);
   const [editedAssign, setEditedAssign] = useState(false);
   const [editComment, setEditComment] = useState(false);
+  const [addComment, setAddComment] = useState(false);
 
   const valueGet = (fieldValue, field, isAlert) => {
     setValue({ ...value, [field]: fieldValue });
@@ -72,7 +73,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
       .post('comments/addNewComment', { comment: value.newComment, list_id: editList.id })
       .then((res) => {
         fetchList();
-        // fetchProject();
+        setAddComment(false);
       })
       .catch((err) => {
         console.log(err);
@@ -82,8 +83,19 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
       });
   };
 
-  const onEditComment = () => {};
-  const onDeleteComment = () => {};
+  const onEditComment = (id) => {
+    setEditComment(false);
+  };
+  const onDeleteComment = async (id) => {
+    alert(id);
+    try {
+      await axios.delete(`comments/destroyComment/${id}`);
+      fetchList();
+      setEditComment(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const btnStyle = { width: '30%', minWidth: '60px' };
   return (
@@ -160,37 +172,46 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                   )}
                   {editedList ? (
                     <div className="list-mark">
-                      <InputField
-                        name="score"
-                        defaultValue={value.score}
-                        label="SCORE:"
-                        type="number"
-                        getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
-                        format="number"
-                        width="30%"
-                        allowLessWidth={true}
-                        need={true}
-                      />
-                      <InputField
-                        name="deadline"
-                        defaultValue={value.deadline}
-                        label="DEADLINE:"
-                        type="date"
-                        getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
-                        format="date"
-                        width="70%"
-                        allowLessWidth={true}
-                        need={true}
-                      />
+                      {editList.type === 'TODO' ? (
+                        <>
+                          <InputField
+                            name="score"
+                            defaultValue={value.score}
+                            label="SCORE:"
+                            type="number"
+                            getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
+                            format="number"
+                            width="30%"
+                            minValue={editList.type === 'TODO' ? '0' : 0}
+                            need={editList.type === 'TODO'}
+                            allowLessWidth={true}
+                            primaryColor={true}
+                          />
+
+                          <InputField
+                            name="deadline"
+                            defaultValue={value.deadline}
+                            label="DEADLINE:"
+                            type="date"
+                            getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
+                            format="date"
+                            width="70%"
+                            allowLessWidth={true}
+                            need={true}
+                          />
+                        </>
+                      ) : null}
                     </div>
                   ) : (
                     <>
-                      <div className="list-mark">
-                        <div className="list-deadline">SCORE: {editList.score}</div>
-                        <div className="list-deadline">
-                          DEADLINE: {editList.list_deadline ? editList.list_deadline : null}
+                      {editList.type === 'TODO' ? (
+                        <div className="list-mark">
+                          <div className="list-deadline">SCORE: {editList.score}</div>
+                          <div className="list-deadline">
+                            DEADLINE: {editList.list_deadline ? editList.list_deadline : null}
+                          </div>
                         </div>
-                      </div>
+                      ) : null}
                       <div className="list-mark">
                         <span className="list-deadline" style={{ fontSize: '8px' }}>
                           CREATED: {editList.created_at ? editList.created_at.slice(0, 9) : null}
@@ -215,23 +236,46 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
               </div>
             ) : (
               <div style={{ display: 'flex' }}>
-                <InputField
-                  name="newComment"
-                  label="Add comment:"
-                  type="text"
-                  getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
-                  format="text"
-                  maxLength={256}
-                  minLength={3}
-                  width="70%"
-                />
-                <button className="btn-submit" style={btnStyle} onClick={sendComment}>
-                  CREATE
-                </button>
+                {addComment ? (
+                  <>
+                    <InputField
+                      name="newComment"
+                      label="Add comment:"
+                      type="text"
+                      getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
+                      format="text"
+                      maxLength={256}
+                      minLength={3}
+                      width="80%"
+                    />
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        color: 'var(--thirdary-color)',
+                        fontSize: '30px',
+                      }}
+                    >
+                      <CloseOutlined onClick={() => setAddComment(false)} />
+                      <SendOutlined onClick={sendComment} />
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    style={{ border: '2px solid black', width: '200px', margin: '5px' }}
+                    onClick={() => {
+                      setAddComment(true);
+                    }}
+                  >
+                    Add comment&nbsp;&nbsp;&nbsp;
+                    <PlusCircleOutlined />
+                  </div>
+                )}
               </div>
             )}
           </div>
-          <div className="modal-comment">
+          <div className="modal-comment" style={{ color: 'var(--thirdaryDarkest-color)' }}>
             {editList.Comments
               ? editList.Comments.map((comment) => {
                   const userPost = teams.filter((member) => member.id === comment.user_id)[0];
@@ -260,15 +304,16 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                           flexDirection: 'column',
                           width: '20%',
                           justifyContent: 'flex-end',
+                          fontSize: '10px',
                         }}
                       >
                         <button style={btnEditComment} onClick={() => setEditComment(false)}>
                           BACK
                         </button>
-                        <button style={btnEditComment} onClick={onEditComment}>
+                        <button style={btnEditComment} onClick={() => onEditComment(comment.id)}>
                           EDIT
                         </button>
-                        <button style={btnEditComment} onClick={onDeleteComment}>
+                        <button style={btnEditComment} onClick={() => onDeleteComment(comment.id)}>
                           DELETE
                         </button>
                       </div>
@@ -278,7 +323,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                       onClick={() => {
                         setEditComment({ id: comment.id, content: '', list_id: comment.list_id });
                       }}
-                      style={{ borderTop: '3px var(--secondary-color) solid', width: '90%', textAlign: 'left' }}
+                      style={{ borderBottom: '3px var(--secondary-color) dashed', width: '90%', textAlign: 'left' }}
                     >
                       <div>{comment.content}</div>
                       <div className="list-mark" style={{ color: 'var(--secondary-color)' }}>

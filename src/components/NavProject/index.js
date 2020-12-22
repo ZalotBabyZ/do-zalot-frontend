@@ -16,6 +16,7 @@ function NavProject() {
 
   const selectProject = (ind) => {
     selectProjectContext.setProject(userContext.userProject.projectList[ind]);
+    localStorage.setItem('IND', ind);
     localStorage.setItem('selectProject', JSON.stringify(userContext.userProject.projectList[ind]));
     history.push('/project');
   };

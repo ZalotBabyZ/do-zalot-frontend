@@ -20,7 +20,7 @@ import ModalEditList from '../../components/ModalEditList';
 
 function Project() {
   const history = useHistory();
-  const userContext = useContext(UserContext);
+  const { setUserProject, userProject } = useContext(UserContext);
   const hoverProjectContext = useContext(HoverProjectContext);
   const selectProjectContext = useContext(SelectProjectContext);
 
@@ -33,19 +33,25 @@ function Project() {
   const [editList, setEditList] = useState(null);
 
   const status = ['TODO', 'DOING', 'DONE'];
-  const fetchProject = () => {
-    axios
-      .get(`projects/getProject?projectId=${selectProjectContext.project.projectId}`)
-      .then((res) => {
-        setBoxes(res.data.boxes);
-        setUser(res.data.user);
-        setTeams(res.data.teams);
-        setProject(res.data.project);
-        setRight(res.data.right);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const fetchProject = async () => {
+    try {
+      const res = await axios.get(`projects/getProject?projectId=${selectProjectContext.project.projectId}`);
+      setBoxes(res.data.boxes);
+      setUser(res.data.user);
+      setTeams(res.data.teams);
+      setProject(res.data.project);
+      setRight(res.data.right);
+      const res1 = await axios.get('users/getProjectList');
+      localStorage.setItem('userProject', JSON.stringify(res1.data.userProject));
+      setUserProject(res1.data.userProject);
+      selectProjectContext.setProject(res1.data.userProject.projectList[localStorage.getItem('IND')]);
+      localStorage.setItem(
+        'selectProject',
+        JSON.stringify(res1.data.userProject.projectList[localStorage.getItem('IND')])
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

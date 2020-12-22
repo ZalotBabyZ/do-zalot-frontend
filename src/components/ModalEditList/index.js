@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import InputField from '../../components/InputField';
 import axios from '../../config/axios';
 import { EditOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 import './style.css';
+import UserContext from '../../context/UserContext';
 
 function ModalEditList({ setEditList, editList, teams, fetchProject }) {
+  const { setUserProject } = useContext(UserContext);
   const [value, setValue] = useState({});
   const [validate, setValidate] = useState({ password: false, username: false });
   const [editedList, setEditedList] = useState(false);
@@ -16,22 +18,23 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
     isAlert ? setValidate({ ...validate, [field]: false }) : setValidate({ ...validate, [field]: true });
   };
 
-  const fetchList = () => {
-    axios
-      .get(`todos/getEditList/${editList.id}`)
-      .then((res) => {
-        setEditList(res.data);
-        setValue({
-          newComment: '',
-          deadline: res.data.list_deadline,
-          list: res.data.list,
-          description: res.data.description,
-          score: res.data.score,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+  const fetchList = async () => {
+    try {
+      const res = await axios.get(`todos/getEditList/${editList.id}`);
+      setEditList(res.data);
+      setValue({
+        newComment: '',
+        deadline: res.data.list_deadline,
+        list: res.data.list,
+        description: res.data.description,
+        score: res.data.score,
       });
+      const res1 = await axios.get('users/getProjectList');
+      localStorage.setItem('userProject', JSON.stringify(res1.data.userProject));
+      setUserProject(res1.data.userProject);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -79,6 +82,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
   };
 
   const onEditComment = () => {};
+  const onDeleteComment = () => {};
 
   const btnStyle = { width: '30%', minWidth: '60px' };
   return (
@@ -257,6 +261,9 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                         </button>
                         <button style={btnEditComment} onClick={onEditComment}>
                           EDIT
+                        </button>
+                        <button style={btnEditComment} onClick={onDeleteComment}>
+                          DELETE
                         </button>
                       </div>
                     </div>

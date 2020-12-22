@@ -22,7 +22,12 @@ function App() {
   return (
     <div className="App" style={{ width: '100vw' }}>
       <UserContext.Provider value={{ role, setRole, user, setUser, userProject, setUserProject }}>
-        <SelectProjectContext.Provider value={{ project: selectProject, setProject: setSelectProject }}>
+        <SelectProjectContext.Provider
+          value={{
+            project: selectProject,
+            setProject: setSelectProject,
+          }}
+        >
           <HoverProjectContext.Provider value={{ project: hoverProject, setProject: setHoverProject }}>
             <PrivateRoutes />
           </HoverProjectContext.Provider>

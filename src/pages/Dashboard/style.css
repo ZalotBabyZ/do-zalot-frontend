@@ -1,11 +1,14 @@
-.card-box {
+.card-project {
   width: 300px;
+  max-width: 80%;
+  border-color: var(--primary-color);
   margin: 5px;
 }
 .header-box {
   width: 100%;
   /* filter: contrast(80%) opacity(80%); */
   color: white;
+  background-color: var(--primary-color);
   font-family: thaisans_neuesemi_bold;
   font-size: 20px;
 }
@@ -23,7 +26,7 @@
 .box--hover {
   display: none;
 }
-.card-box:hover .box--hover {
+.header-box:hover .box--hover {
   display: inline;
 }
 .list-block {
@@ -35,6 +38,7 @@
   width: 100%;
   min-height: 50px;
   padding: 5px 0px;
+  font-color: 'var(--primaryDarkest-color)';
 }
 /* .list-item {
     display: flex;

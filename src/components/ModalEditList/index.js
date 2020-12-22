@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import InputField from '../../components/InputField';
 import axios from '../../config/axios';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 import './style.css';
 import UserContext from '../../context/UserContext';
@@ -11,6 +11,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
   const [value, setValue] = useState({});
   const [validate, setValidate] = useState({ password: false, username: false });
   const [editedList, setEditedList] = useState(false);
+  const [editedAssign, setEditedAssign] = useState(false);
   const [editComment, setEditComment] = useState(false);
 
   const valueGet = (fieldValue, field, isAlert) => {
@@ -110,19 +111,24 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
         <div className="modal-body modal-body-2col">
           <div className="modal-todo">
             <div style={{ width: '100%', color: 'var(--thirdaryDarkest-color)' }}>
-              <div className="list-assign" style={{ justifyContent: 'flex-start' }}>
-                ASSIGN TO:&nbsp;&nbsp;&nbsp;
-                {editList.Assigns
-                  ? editList.Assigns.map((user) => {
-                      console.log(user);
-                      const targetUser = teams.filter((member) => member.id === user.user_id)[0];
-                      console.log(targetUser);
-                      return user.user_status === 'UNDERTAKE' && targetUser ? (
-                        <img src={targetUser.User.image} style={{ border: `2px solid ${targetUser.User.color}` }} />
-                      ) : null;
-                    })
-                  : null}
-                <EditOutlined onClick={() => setEditedList(true)} />
+              <div className="list-assign" style={{ justifyContent: 'space-between', padding: '0px 10px' }}>
+                <div style={{ padding: '0px 10px' }}>
+                  ASSIGN TO:&nbsp;&nbsp;&nbsp;
+                  {editList.Assigns
+                    ? editList.Assigns.map((user) => {
+                        console.log(user);
+                        const targetUser = teams.filter((member) => member.id === user.user_id)[0];
+                        console.log(targetUser);
+                        return user.user_status === 'UNDERTAKE' && targetUser ? (
+                          <img src={targetUser.User.image} style={{ border: `2px solid ${targetUser.User.color}` }} />
+                        ) : null;
+                      })
+                    : null}
+                </div>
+                <div style={{ padding: '0px 10px', fontSize: '20px', padding: '0px 10px' }}>
+                  <UserSwitchOutlined onClick={() => setEditedAssign(true)} />
+                  <EditOutlined onClick={() => setEditedList(true)} />
+                </div>
               </div>
             </div>
             <div className="list-todo">

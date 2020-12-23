@@ -60,6 +60,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
         });
         fetchList();
         fetchProject();
+        setEditedList(false);
       })
       .catch((err) => {
         console.log(err);
@@ -87,7 +88,6 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
     setEditComment(false);
   };
   const onDeleteComment = async (id) => {
-    alert(id);
     try {
       await axios.delete(`comments/destroyComment/${id}`);
       fetchList();
@@ -323,10 +323,15 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                       onClick={() => {
                         setEditComment({ id: comment.id, content: '', list_id: comment.list_id });
                       }}
-                      style={{ borderBottom: '3px var(--secondary-color) dashed', width: '90%', textAlign: 'left' }}
+                      style={{
+                        color: userPost.User.color,
+                        borderBottom: `3px ${userPost.User.color} dashed`,
+                        width: '90%',
+                        textAlign: 'left',
+                      }}
                     >
                       <div>{comment.content}</div>
-                      <div className="list-mark" style={{ color: 'var(--secondary-color)' }}>
+                      <div className="list-mark">
                         <div className="list-deadline">{userPost.User.username}</div>
                         <div className="list-deadline">
                           {comment.created_at ? comment.created_at.slice(0, 9) : null}

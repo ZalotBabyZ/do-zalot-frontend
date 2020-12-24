@@ -183,7 +183,7 @@ function Project() {
                           </button>
                         </div>
                       </div>
-                      <div>{list.list}</div>
+                      <div style={{ width: '85%', textAlign: 'left' }}>{list.list}</div>
                       <div className="list-description-icon">
                         <QuestionOutlined />
                         <div className="list-description" style={colorBorder}>

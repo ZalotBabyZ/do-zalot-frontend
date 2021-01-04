@@ -33,6 +33,7 @@ function InputField(props) {
     }
     setAlertMsg(msg);
     getValue(value, name, msg);
+    // eslint-disable-next-line
   }, [value]);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ function InputField(props) {
       }}
     >
       <div className="input-field">
-        <label className={`input-label ${props.primaryColor ? 'input-label--primary' : null}`} for={name}>
+        <label className={`input-label ${props.primaryColor ? 'input-label--primary' : null}`} htmlFor={name}>
           {label}
         </label>
         <input
@@ -63,6 +64,7 @@ function InputField(props) {
             setValue(e.target.value);
           }}
           type={type}
+          autoComplete="on"
         />
         {alertMsg ? <p className="msg-alert"> {alertMsg}</p> : null}
       </div>

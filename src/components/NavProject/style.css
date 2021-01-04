@@ -1,7 +1,6 @@
 .nav-item {
   width: 80px;
   height: 80px;
-  /* background: linear-gradient(360deg, var(--primary-color) 13%, var(--primaryBright-color) 50%); */
   border-radius: 10px 0px 0px 10px;
   border-width: 0px 3px 0px 0px;
   border-color: var(--primaryDarkest-color);
@@ -19,13 +18,12 @@
   align-items: center;
   font-family: 'thaisans_neuesemi_bold';
   font-size: 40px;
-  opacity: 100%;
   top: 10px;
   left: 10px;
   border-radius: 50%;
   color: white;
   background-color: white;
-  opacity: 20%;
+  opacity: 0.2;
   border: white double 10px;
 }
 @media only screen and (max-width: 500px) {

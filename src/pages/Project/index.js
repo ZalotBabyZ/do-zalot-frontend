@@ -163,7 +163,7 @@ function Project() {
                                   ) : (
                                     <button
                                       className="list-status"
-                                      style={{ backgroundColor: 'grey', color: 'white', opacity: '20%' }}
+                                      style={{ backgroundColor: 'grey', color: 'white', opacity: 0.2 }}
                                       disabled={true}
                                     >
                                       {choice}

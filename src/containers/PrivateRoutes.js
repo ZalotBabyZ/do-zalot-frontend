@@ -13,8 +13,8 @@ function PrivateRoutes() {
 
   return (
     <Switch>
-      {pageList.map((page) => (
-        <Route exact path={page.url}>
+      {pageList.map((page, ind) => (
+        <Route exact path={page.url} key={ind}>
           <Layout page={page.url}>
             <page.page />
           </Layout>

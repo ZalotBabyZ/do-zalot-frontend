@@ -31,11 +31,11 @@ function BarNav({ page }) {
     setActiveLogout(false);
     history.push('/');
   };
-  console.log(!!selectProjectContext.project);
+
   return (
     <div className="container-bar-nav">
       <div className="nav-bar-block">
-        {navList.map((pages) =>
+        {navList.map((pages, ind) =>
           userContext.user && pages.page === userContext.user.username ? (
             <button
               className="nav-list"
@@ -43,6 +43,7 @@ function BarNav({ page }) {
               onMouseOver={() => setActiveLogout(true)}
               onMouseLeave={() => setActiveLogout(false)}
               onClick={logoutHandler}
+              key={ind}
             >
               {activeLogout ? 'LOGOUT' : pages.page}
             </button>
@@ -52,6 +53,7 @@ function BarNav({ page }) {
               style={{ width: navBtnWidth }}
               disabled={!selectProjectContext.project}
               onClick={() => history.push(pages.url)}
+              key={ind}
             >
               {pages.page}
             </button>
@@ -60,6 +62,7 @@ function BarNav({ page }) {
               className={`nav-list ${pages.url === page ? 'nav-list-active' : null}`}
               style={{ width: navBtnWidth }}
               onClick={() => history.push(pages.url)}
+              key={ind}
             >
               {pages.page}
             </button>

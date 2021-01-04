@@ -51,7 +51,7 @@ function Login() {
   return (
     <div className="page" style={{ height: '85vh' }}>
       <div className="page-login">
-        <div className="card card--primary card-login">
+        <form className="card card--primary card-login">
           <div style={{ width: '100%', height: '30px' }}></div>
           <InputField
             name="username"
@@ -76,13 +76,14 @@ function Login() {
             width="80%"
             primaryColor={true}
           />
+
           <div className="block-btn">
             <button className="btn-submit btn--primary" onClick={loginHandler} disabled={disableBtn()}>
               LOGIN
             </button>
           </div>
           <div style={{ width: '100%', height: '30px' }}></div>
-        </div>
+        </form>
       </div>
     </div>
   );

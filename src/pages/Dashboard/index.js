@@ -7,7 +7,13 @@ import SelectProjectContext from '../../context/SelectProjectContext';
 import InputField from '../../components/InputField';
 import CheckBox from '../../components/CheckBox';
 import { notification } from 'antd';
-import { RightCircleOutlined, DownCircleOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import {
+  RightCircleOutlined,
+  DownCircleOutlined,
+  EditOutlined,
+  PlusCircleOutlined,
+  TeamOutlined,
+} from '@ant-design/icons';
 import LocalStorageService from '../../services/localStorage';
 import ModalAddList from '../../components/ModalAddList';
 
@@ -66,9 +72,23 @@ function Project() {
       {/* {addList ? <ModalAddList setAddList={setAddList} addList={addList} fetchProject={fetchProject} /> : null} */}
 
       <div className="card card-project">
-        <div className="header-box" onClick={() => setAddProject(true)}>
-          NEW PROJECT
-          <span className="box--hover"> [ click to create new ] </span>
+        <div className="header-box" style={{ textAlign: 'left' }}>
+          &nbsp;
+          <TeamOutlined /> PENDING LIST
+          <span className="box--hover"> [ invited / ask to join] </span>
+        </div>
+        <div className="list-block" style={{ color: 'var(--primary-color)' }}>
+          <div className="list-todo" style={{ borderColor: 'var(--primary-color)', flexDirection: 'column' }}>
+            <p>ไม่มีโปรเจคที่ถูกเชิญ หรือ ขอเข้าร่วม ค้างอยู่</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="card card-project">
+        <div className="header-box" style={{ textAlign: 'left' }}>
+          &nbsp;
+          <PlusCircleOutlined onClick={() => setAddProject(true)} /> NEW PROJECT
+          <span className="box--hover"> [ click + to add new ] </span>
         </div>
         {addProject ? (
           <>
@@ -176,7 +196,14 @@ function Project() {
               </button>
             </div>
           </>
-        ) : null}
+        ) : (
+          <div className="list-block" style={{ color: 'var(--primary-color)' }}>
+            <div className="list-todo" style={{ borderColor: 'var(--primary-color)', flexDirection: 'column' }}>
+              <p>คลิ๊ก + บนหัวข้อ NEW PROJECT </p>
+              <p>เพื่อเพิ่ม project ใหม่</p>
+            </div>
+          </div>
+        )}
       </div>
       {userContext.userProject
         ? userContext.userProject.projectList.map((project, ind) => {
@@ -210,7 +237,7 @@ function Project() {
                 onClick={() => selectProject(ind)}
               >
                 <div className="header-box" style={{ ...colorBackground, textAlign: 'left' }}>
-                  <span style={{ color: 'white', margin: '0px 5px' }}>{ind + 1}</span>
+                  <span style={{ color: 'white', margin: '0px 5px' }}>&nbsp;{ind + 1}</span>
                   {')   ' + project.projectName}
                   <span className="box--hover"> [ PROJECT ID: {project.projectId} ] </span>
                 </div>

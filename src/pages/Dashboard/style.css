@@ -36,7 +36,7 @@
   width: 100%;
   min-height: 50px;
   padding: 5px 0px;
-  font-color: 'var(--primaryDarkest-color)';
+  color: 'var(--primaryDarkest-color)';
 }
 /* .list-item {
     display: flex;

@@ -26,7 +26,8 @@ function Login() {
     isAlert ? setValidate({ ...validate, [field]: false }) : setValidate({ ...validate, [field]: true });
   };
 
-  const loginHandler = () => {
+  const loginHandler = (e) => {
+    e.preventDefault();
     axios
       .post('/users/login', { username: value.username, password: value.password })
       .then((res) => {
@@ -78,7 +79,7 @@ function Login() {
           />
 
           <div className="block-btn">
-            <button className="btn-submit btn--primary" onClick={loginHandler} disabled={disableBtn()}>
+            <button className="btn-submit btn--primary" onClick={(e) => loginHandler(e)} disabled={disableBtn()}>
               LOGIN
             </button>
           </div>

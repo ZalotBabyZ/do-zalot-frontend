@@ -127,7 +127,7 @@
   width: 100vw;
   height: 100vh;
   z-index: 4;
-  opacity: 30%;
+  opacity: 0.3;
 }
 .modal {
   display: flex;

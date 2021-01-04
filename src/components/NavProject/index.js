@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import './style.css';
 import { useHistory } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
@@ -28,6 +28,7 @@ function NavProject() {
                 onClick={() => selectProject(ind)}
                 onMouseOver={() => hoverProjectContext.setProject(userContext.userProject.projectList[ind])}
                 onMouseLeave={() => hoverProjectContext.setProject(0)}
+                key={ind}
               >
                 <div
                   className="nav-item"

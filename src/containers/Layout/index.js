@@ -1,13 +1,9 @@
-import { useContext } from 'react';
 import './style.css';
-import UserContext from '../../context/UserContext';
 import BarProject from '../../components/BarProject';
 import NavProject from '../../components/NavProject';
 import BarNav from '../../components/BarNav';
 
 function Layout({ children, page }) {
-  const userContext = useContext(UserContext);
-
   return (
     <div className="layout-container">
       <div className="nav-head">

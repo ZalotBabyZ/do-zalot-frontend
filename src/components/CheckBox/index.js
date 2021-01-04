@@ -1,5 +1,5 @@
 import './style.css';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 function CheckBox(props) {
   const choice = props.choice ? props.choice : null;
@@ -10,6 +10,7 @@ function CheckBox(props) {
       choice.forEach((item) => (initCbValue = { ...initCbValue, [item.id]: false }));
       props.setValue({ ...props.value, [props.name]: initCbValue });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

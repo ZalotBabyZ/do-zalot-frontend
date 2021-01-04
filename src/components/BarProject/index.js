@@ -86,6 +86,7 @@ function BarProject(props) {
         selectProjectContext.project ? selectProjectContext.project.projectColor : 'var(--thirdary-color)'
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hoverProjectContext]);
 
   return (

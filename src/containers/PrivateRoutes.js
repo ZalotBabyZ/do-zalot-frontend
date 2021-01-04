@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import permissionList from '../config/roles.js';
 import Layout from './Layout';
@@ -8,8 +8,6 @@ import UserContext from '../context/UserContext';
 function PrivateRoutes() {
   const userContext = useContext(UserContext);
   const pageList = permissionList[userContext.role];
-
-  //   console.log(permissionList);
 
   return (
     <Switch>

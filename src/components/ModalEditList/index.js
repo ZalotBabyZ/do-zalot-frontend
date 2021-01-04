@@ -41,6 +41,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
 
   useEffect(() => {
     fetchList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const descriptionStyle = {
@@ -132,12 +133,16 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                         const targetUser = teams.filter((member) => member.id === user.user_id)[0];
                         console.log(targetUser);
                         return user.user_status === 'UNDERTAKE' && targetUser ? (
-                          <img src={targetUser.User.image} style={{ border: `2px solid ${targetUser.User.color}` }} />
+                          <img
+                            src={targetUser.User.image}
+                            style={{ border: `2px solid ${targetUser.User.color}` }}
+                            alt="user"
+                          />
                         ) : null;
                       })
                     : null}
                 </div>
-                <div style={{ padding: '0px 10px', fontSize: '20px', padding: '0px 10px' }}>
+                <div style={{ fontSize: '20px', padding: '0px 10px' }}>
                   <UserSwitchOutlined onClick={() => setEditedAssign(true)} />
                   <EditOutlined onClick={() => setEditedList(true)} />
                 </div>

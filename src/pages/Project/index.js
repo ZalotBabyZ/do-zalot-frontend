@@ -1,10 +1,8 @@
 import { useContext, useState, useEffect } from 'react';
 import './style.css';
 import axios from '../../config/axios';
-import { useHistory } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import SelectProjectContext from '../../context/SelectProjectContext';
-import HoverProjectContext from '../../context/HoverProjectContext';
 import { notification } from 'antd';
 import {
   QuestionOutlined,
@@ -14,14 +12,11 @@ import {
   CommentOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
-import LocalStorageService from '../../services/localStorage';
 import ModalAddList from '../../components/ModalAddList';
 import ModalEditList from '../../components/ModalEditList';
 
 function Project() {
-  const history = useHistory();
-  const { setUserProject, userProject } = useContext(UserContext);
-  const hoverProjectContext = useContext(HoverProjectContext);
+  const { setUserProject } = useContext(UserContext);
   const selectProjectContext = useContext(SelectProjectContext);
 
   const [user, setUser] = useState({});
@@ -56,6 +51,7 @@ function Project() {
 
   useEffect(() => {
     fetchProject();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectProjectContext.project.projectId]);
 
   const setListStatus = (listId, status, newBoxId) => {
@@ -105,7 +101,7 @@ function Project() {
         };
 
         return (
-          <div className="card card-box" style={colorBorder}>
+          <div className="card card-box" style={colorBorder} key={boxInd}>
             <div className="header-box" style={colorBackground}>
               {box.box_name}
               <span className="box--hover"> [ {box.type} ] </span>
@@ -117,7 +113,7 @@ function Project() {
             ) : (
               box.Lists.map((list, listInd) => {
                 return (
-                  <div className="list-block" style={colorFont}>
+                  <div className="list-block" style={colorFont} key={listInd}>
                     <div className="list-todo" style={colorBorder}>
                       <div className="list-action-icon">
                         <div className="list-action-icon--normal">
@@ -129,21 +125,22 @@ function Project() {
                         <div className="list-action" style={colorBackground}>
                           {box.type === 'NOTE'
                             ? null
-                            : status.map((choice) => {
+                            : status.map((choice, indChoice) => {
                                 const statusButton = {
                                   color: `${box.color ? box.color : 'var(--secondaryDarkest-color)'}`,
                                 };
                                 return project.box && project.box[choice][0] ? (
                                   project.box && project.box[choice][1] ? (
-                                    <button className="list-status" style={statusButton}>
+                                    <button className="list-status" style={statusButton} key={indChoice}>
                                       {choice}
                                       <div className="status-choice">
                                         {project.box && project.box[choice][1]
-                                          ? project.box[choice].map((todoStatus) =>
+                                          ? project.box[choice].map((todoStatus, ind) =>
                                               todoStatus.name !== box.box_name ? (
                                                 <div
                                                   className="status-choice"
                                                   onClick={() => setListStatus(list.id, choice, todoStatus.id)}
+                                                  key={ind}
                                                 >
                                                   {todoStatus.name}
                                                 </div>
@@ -154,6 +151,7 @@ function Project() {
                                     </button>
                                   ) : choice !== box.type ? (
                                     <button
+                                      key={indChoice}
                                       className="list-status"
                                       style={statusButton}
                                       onClick={() => setListStatus(list.id, choice, project.box[choice][0].id)}
@@ -162,6 +160,7 @@ function Project() {
                                     </button>
                                   ) : (
                                     <button
+                                      key={indChoice}
                                       className="list-status"
                                       style={{ backgroundColor: 'grey', color: 'white', opacity: 0.2 }}
                                       disabled={true}
@@ -233,12 +232,14 @@ function Project() {
                       )}
                       <div className="list-assign">
                         {list.Assigns
-                          ? list.Assigns.map((user) => {
+                          ? list.Assigns.map((user, ind) => {
                               const targetUser = teams.filter((member) => member.id === user.id)[0];
                               return user.userStatus === 'UNDERTAKE' && targetUser ? (
                                 <img
                                   src={targetUser.User.image}
                                   style={{ border: `2px solid ${targetUser.User.color}` }}
+                                  key={ind}
+                                  alt="user"
                                 />
                               ) : null;
                             })

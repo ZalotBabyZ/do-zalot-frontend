@@ -24,6 +24,7 @@ const getUser = () => {
   return { role: 'guest' };
 };
 
+// eslint-disable-next-line
 export default {
   getToken,
   setToken,

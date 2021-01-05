@@ -13,25 +13,25 @@ function InputField(props) {
       let pre = '';
       if (props.format) {
         if (props.format === 'number') {
-          msg += isNaN(value) ? 'ต้องเป็นตัวเลขเท่านั้น' : '';
+          msg += isNaN(value) ? 'Nmber only' : '';
         }
       }
       if (props.minLength) {
-        pre = msg ? ' และ' : '';
-        msg += value.length < props.minLength ? `${pre}ต้องไม่ต่ำกว่า ${props.minLength} ตัวอักษร` : '';
+        pre = msg ? ' ,' : '';
+        msg += value.length < props.minLength ? `${pre} Minimun  ${props.minLength} chars` : '';
       }
       if (props.maxLength) {
-        pre = msg ? ' และ' : '';
-        msg += value.length > props.maxLength ? `${pre}ต้องไม่เกิน ${props.maxLength} ตัวอักษร` : '';
+        pre = msg ? ' ,' : '';
+        msg += value.length > props.maxLength ? `${pre} Maximum ${props.maxLength} chars` : '';
       }
       if (props.minValue) {
-        pre = msg ? ' และ' : '';
-        msg += +value < props.minValue ? `${pre}ค่าต้องไม่ต่ำกว่า ${props.minValue}` : '';
+        pre = msg ? ' ,' : '';
+        msg += +value < props.minValue ? `${pre} Minimum value is ${props.minValue}` : '';
       }
     } else {
-      msg = props.need ? 'คุณต้องกรอกช่องนี้' : (msg = '');
+      msg = props.need ? 'Require this field' : (msg = '');
     }
-    setAlertMsg(msg);
+    setAlertMsg(msg + '.');
     getValue(value, name, msg);
     // eslint-disable-next-line
   }, [value]);

@@ -68,7 +68,7 @@ function Register() {
           <div style={{ width: '100%', height: '30px' }}></div>
           <InputField
             name="username"
-            label="ชื่อผู้ใช้:"
+            label="USERNAME:"
             type="text"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
@@ -80,7 +80,7 @@ function Register() {
           />
           <InputField
             name="password"
-            label="รหัสผ่าน:"
+            label="PASSWORD:"
             type="password"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
@@ -91,7 +91,7 @@ function Register() {
           />
           <InputField
             name="confirmPassword"
-            label="กรอกรหัสผ่านอีกครั้ง:"
+            label="CONFIRM PASSWORD:"
             type="password"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
@@ -101,11 +101,11 @@ function Register() {
             primaryColor={true}
           />
           {!value.confirmPassword ? null : validate.passwordConfirm ? null : (
-            <div className="msg-alert">รหัสไม่ตรงกัน</div>
+            <div className="msg-alert"> PASSWORD NOT MATCH !!! </div>
           )}
           <InputField
             name="firstname"
-            label="ชื่อ:"
+            label="FIRSTNAME:"
             type="text"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
@@ -117,7 +117,7 @@ function Register() {
           />
           <InputField
             name="lastname"
-            label="นามสกุล:"
+            label="LASTNAME:"
             type="text"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
@@ -129,7 +129,7 @@ function Register() {
           />
           <InputField
             name="email"
-            label="อีเมล:"
+            label="EMAIL:"
             type="email"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
@@ -144,7 +144,7 @@ function Register() {
 
           <InputField
             name="user_color"
-            label="สีประจำตัว:"
+            label="SELECT YOUR COLOR:"
             type="color"
             getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
             format="text"
@@ -157,7 +157,7 @@ function Register() {
 
           <CheckBox
             type="radio"
-            name="gender"
+            name="GENDER"
             boxWidth="80%"
             choiceWidth="40%"
             choice={[
@@ -166,7 +166,7 @@ function Register() {
             ]}
             value={value}
             setValue={setValue}
-            label="เพศ"
+            label="GENDER"
             primaryColor={true}
           />
 

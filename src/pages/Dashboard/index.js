@@ -12,7 +12,8 @@ import {
   CloseCircleOutlined,
   PlusCircleOutlined,
   TeamOutlined,
-  FolderOpenOutlined,
+  ProjectOutlined,
+  MehOutlined,
   CalendarOutlined,
 } from '@ant-design/icons';
 
@@ -172,8 +173,6 @@ function Project() {
   };
   return (
     <div className="page page-project" style={{ justifyContent: 'flex-start', padding: '10px' }}>
-      {/* {addList ? <ModalAddList setAddList={setAddList} addList={addList} fetchProject={fetchProject} /> : null} */}
-
       <div className="card card-project">
         <div className="header-box" style={{ textAlign: 'left', backgroundColor: 'var(--primary-color)' }}>
           &nbsp;
@@ -241,13 +240,14 @@ function Project() {
                 primaryColor={true}
               />
               <div style={{ color: 'var(--primary-color)', fontSize: '16px' }}>
-                ADD PROJECT MEMBER
+                INVITE MEMBER BY USERNAME
                 <PlusCircleOutlined onClick={() => setAddFriend([...addFriend, { username: '' }])} />
               </div>
 
               {addFriend.map((friend, ind) => {
                 return (
                   <div
+                    key={ind}
                     style={{
                       display: 'flex',
                       justifyContent: 'center',
@@ -289,10 +289,11 @@ function Project() {
         ) : (
           <div className="list-block" style={{ color: 'var(--primary-color)' }}>
             <div className="list-todo" style={{ borderColor: 'var(--primary-color)', flexDirection: 'column' }}>
-              <p>
-                คลิ๊ก <PlusCircleOutlined onClick={() => setAddProject(true)} /> เพื่อเพิ่ม project ใหม่
-              </p>
+              <p> CREATE PROJECT AND INVITE FRIENDS </p>
             </div>
+            <p style={{ fontSize: '12px' }}>
+              To add new project, Click <PlusCircleOutlined onClick={() => setAddProject(true)} />.
+            </p>
           </div>
         )}
       </div>
@@ -352,7 +353,10 @@ function Project() {
               }}
             >
               {inviteList.length === 0 ? (
-                <p> ไม่มี โปรเจคที่ถูกเชิญ ค้างอยู่</p>
+                <p style={{ width: '100%', textAlign: 'left' }}>
+                  <MehOutlined />
+                  &nbsp;&nbsp;&nbsp; No invitations.
+                </p>
               ) : (
                 inviteList.map((item, ind) => {
                   return (
@@ -381,7 +385,10 @@ function Project() {
               }}
             >
               {requestList.length === 0 ? (
-                <p>ไม่มี โปรเจคที่ขอเข้าร่วม ค้างอยู่</p>
+                <p style={{ width: '100%', textAlign: 'left' }}>
+                  <MehOutlined />
+                  &nbsp;&nbsp;&nbsp; No requests to join.
+                </p>
               ) : (
                 requestList.map((item, ind) => {
                   return (
@@ -397,8 +404,10 @@ function Project() {
                 })
               )}
             </div>
-            <p>
-              คลิ๊ก <TeamOutlined onClick={() => setJoinRequest(true)} /> เพื่อส่งคำขอเข้าร่วม project
+            <p style={{ fontSize: '12px' }}>
+              To join friend's project, Click <TeamOutlined onClick={() => setJoinRequest(true)} /> to send request.{' '}
+              <br />
+              Ask project ID from your friend.
             </p>
           </div>
         )}
@@ -424,17 +433,19 @@ function Project() {
               : '0%';
             return (
               <div
+                key={ind}
                 className="card"
-                style={{ ...colorBorder, width: '300px', maxWidth: '80%', cursor: 'pointer' }}
+                style={{ ...colorBorder, margin: '5px', width: '300px', maxWidth: '80%', cursor: 'pointer' }}
                 onClick={() => selectProject(ind)}
               >
                 <div className="header-box" style={{ ...colorBackground, textAlign: 'left' }}>
-                  <span style={{ color: 'white', margin: '0px 5px' }}>
+                  <p style={{ color: 'white', margin: '0px 5px' }}>
                     &nbsp;
-                    <FolderOpenOutlined />-{ind + 1}
-                  </span>
-                  {project.projectName}
-                  <span className="box--hover"> [ PROJECT ID: {project.projectId} ] </span>
+                    <ProjectOutlined />
+                    &nbsp;&nbsp;
+                    {project.projectName}
+                  </p>
+                  <p className="box--hover"> &nbsp;&nbsp;[ PROJECT ID: {project.projectId} ] </p>
                 </div>
                 <div className="list-block" style={colorFont}>
                   <div className="list-todo" style={colorBorder}>

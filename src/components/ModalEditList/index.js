@@ -8,7 +8,7 @@ import UserContext from '../../context/UserContext';
 
 function ModalEditList({ setEditList, editList, teams, fetchProject }) {
   const { setUserProject } = useContext(UserContext);
-  const [value, setValue] = useState({});
+  const [value, setValue] = useState();
   const [validate, setValidate] = useState({ password: false, username: false });
   const [editedList, setEditedList] = useState(false);
   const [editedAssign, setEditedAssign] = useState(false);
@@ -86,7 +86,18 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
   };
 
   const onEditComment = (id) => {
-    setEditComment(false);
+    axios
+      .patch('comments/editComment', { comment: value.editComment, id })
+      .then((res) => {
+        fetchList();
+        setEditComment(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        notification.error({
+          description: err.response.data.message,
+        });
+      });
   };
   const onDeleteComment = async (id) => {
     try {
@@ -95,6 +106,9 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
       setEditComment(false);
     } catch (err) {
       console.log(err);
+      notification.error({
+        description: err.response.data.message,
+      });
     }
   };
 
@@ -295,6 +309,7 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                     <div style={{ display: 'flex' }}>
                       <InputField
                         name="editComment"
+                        defaultValue={comment.content}
                         label="Edit comment:"
                         type="text"
                         getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
@@ -312,7 +327,13 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                           fontSize: '10px',
                         }}
                       >
-                        <button style={btnEditComment} onClick={() => setEditComment(false)}>
+                        <button
+                          style={btnEditComment}
+                          onClick={() => {
+                            setEditComment(false);
+                            setValue({ ...value, editComment: '' });
+                          }}
+                        >
                           BACK
                         </button>
                         <button style={btnEditComment} onClick={() => onEditComment(comment.id)}>
@@ -326,7 +347,8 @@ function ModalEditList({ setEditList, editList, teams, fetchProject }) {
                   ) : (
                     <div
                       onClick={() => {
-                        setEditComment({ id: comment.id, content: '', list_id: comment.list_id });
+                        setEditComment({ id: comment.id, list_id: comment.list_id });
+                        setValue({ ...value, editComment: comment.content });
                       }}
                       style={{
                         color: userPost.User.color,

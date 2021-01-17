@@ -11,6 +11,11 @@ import {
   EditOutlined,
   CommentOutlined,
   PlusCircleOutlined,
+  TeamOutlined,
+  CalendarOutlined,
+  MehOutlined,
+  CloseCircleOutlined,
+  CheckCircleOutlined,
 } from '@ant-design/icons';
 import ModalAddList from '../../components/ModalAddList';
 import ModalEditList from '../../components/ModalEditList';
@@ -20,6 +25,7 @@ function Project() {
   const selectProjectContext = useContext(SelectProjectContext);
 
   const [user, setUser] = useState({});
+  const [requestList, setRequestList] = useState([]);
   const [project, setProject] = useState({});
   const [teams, setTeams] = useState([]);
   const [right, setRight] = useState({});
@@ -49,10 +55,23 @@ function Project() {
     }
   };
 
+  const fetchRequest = async () => {
+    try {
+      const res = await axios.get(`projects/getTeamRequest/${selectProjectContext.project.projectId}`);
+      setRequestList(res.data.requestList);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchProject();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectProjectContext.project.projectId]);
+  useEffect(() => {
+    fetchRequest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const setListStatus = (listId, status, newBoxId) => {
     axios
@@ -81,6 +100,40 @@ function Project() {
     setEditList({ id });
   };
 
+  const acceptRequest = (teamId, projectId) => {
+    axios
+      .patch(`projects/acceptTeamRequest/${teamId}/${projectId}`)
+      .then((res) => {
+        notification.success({
+          description: 'Already updated',
+        });
+        fetchRequest();
+      })
+      .catch((err) => {
+        console.log(err);
+        notification.error({
+          description: 'Update Not Success',
+        });
+      });
+  };
+
+  const rejectRequest = (teamId, projectId) => {
+    axios
+      .delete(`projects/rejectTeamRequest/${teamId}/${projectId}`)
+      .then((res) => {
+        notification.success({
+          description: 'Already updated',
+        });
+        fetchRequest();
+      })
+      .catch((err) => {
+        console.log(err);
+        notification.error({
+          description: 'Update Not Success',
+        });
+      });
+  };
+
   return (
     <div className="page page-project" style={{ justifyContent: 'flex-start', padding: '10px' }}>
       {addList ? <ModalAddList setAddList={setAddList} addList={addList} fetchProject={fetchProject} /> : null}
@@ -88,6 +141,74 @@ function Project() {
         <ModalEditList setEditList={setEditList} editList={editList} teams={teams} fetchProject={fetchProject} />
       ) : null}
 
+      <div className="card card-project" style={{ borderColor: selectProjectContext.project.projectColor }}>
+        <div
+          className="header-box"
+          style={{ backgroundColor: selectProjectContext.project.projectColor, textAlign: 'left' }}
+        >
+          &nbsp;
+          <TeamOutlined /> PROJECT REQUEST CARD
+          <span className="box--hover"> [ pending ] </span>
+        </div>
+
+        <div className="list-block" style={{ color: selectProjectContext.project.projectColor }}>
+          <div
+            className="list-todo"
+            style={{
+              borderColor: selectProjectContext.project.projectColor,
+              flexDirection: 'column',
+            }}
+          >
+            {requestList.length === 0 ? (
+              <p style={{ width: '100%', textAlign: 'left' }}>
+                <MehOutlined />
+                &nbsp;&nbsp;&nbsp; No Request to join.
+              </p>
+            ) : (
+              requestList.map((item, ind) => {
+                return (
+                  <div key={ind} className="list-todo">
+                    <div style={{ width: '80%' }}>
+                      <p> USERNAME: {item.User.username} </p>
+                      <p style={{ fontSize: '10px' }}>
+                        <CalendarOutlined /> request date: {item.created_at.slice(0, 10)}
+                      </p>
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
+                        alignItems: 'flex-end',
+                        height: '100%',
+                        width: '20%',
+                        fontSize: '25px',
+                      }}
+                    >
+                      <CheckCircleOutlined
+                        onClick={() => acceptRequest(item.id, selectProjectContext.project.projectId)}
+                      />
+                      <CloseCircleOutlined
+                        onClick={() => rejectRequest(item.id, selectProjectContext.project.projectId)}
+                      />
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+          <div
+            className="list-todo"
+            style={{
+              borderColor: selectProjectContext.project.projectColor,
+              flexDirection: 'column',
+              borderTopWidth: '0px',
+            }}
+          ></div>
+        </div>
+      </div>
+
+      {/* box list cards */}
       {boxes.map((box, boxInd) => {
         const colorBorder = { borderColor: `${box.color ? box.color : 'var(--primary-color)'}` };
         const colorBackground = { backgroundColor: `${box.color ? box.color : 'var(--primary-color)'}` };

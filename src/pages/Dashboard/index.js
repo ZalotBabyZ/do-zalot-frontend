@@ -195,6 +195,7 @@ function Project() {
   };
   return (
     <div className="page page-project" style={{ justifyContent: 'flex-start', padding: '10px' }}>
+      {/* new project card */}
       <div className="card card-project">
         <div className="header-box" style={{ textAlign: 'left', backgroundColor: 'var(--primary-color)' }}>
           &nbsp;
@@ -320,6 +321,7 @@ function Project() {
         )}
       </div>
 
+      {/* request card */}
       <div className="card card-project" style={userColor}>
         <div className="header-box" style={userHeaderBox}>
           &nbsp;
@@ -424,6 +426,7 @@ function Project() {
         )}
       </div>
 
+      {/* project list cards */}
       {userContext.userProject
         ? userContext.userProject.projectList.map((project, ind) => {
             const colorBorder = {

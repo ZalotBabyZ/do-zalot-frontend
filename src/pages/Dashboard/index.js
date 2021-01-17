@@ -15,6 +15,7 @@ import {
   ProjectOutlined,
   MehOutlined,
   CalendarOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 
 function Project() {
@@ -29,6 +30,7 @@ function Project() {
   const [requestList, setRequestList] = useState([]);
   const [addProject, setAddProject] = useState(false);
   const [joinRequest, setJoinRequest] = useState(false);
+  const [resetPassword, setResetPassword] = useState(false);
 
   const fetchPendingList = async () => {
     try {
@@ -150,6 +152,19 @@ function Project() {
       });
     }
   };
+  const changePassword = async () => {
+    try {
+      await axios.patch('/users/changePassword', { oldPassword: value.oldPassword, newPassword: value.newPassword });
+      notification.success({
+        description: 'Password Change Success',
+      });
+    } catch (err) {
+      console.log(err);
+      notification.error({
+        description: 'Password Change Not Success',
+      });
+    }
+  };
 
   const btnPending = {
     backgroundColor: `${userContext.user ? userContext.user.userColor : null}`,
@@ -171,13 +186,20 @@ function Project() {
     width: '20%',
     fontSize: '25px',
   };
+  const userColor = {
+    borderColor: `${userContext.user ? userContext.user.userColor : 'var(--primary-color)'}`,
+  };
+  const userHeaderBox = {
+    textAlign: 'left',
+    backgroundColor: `${userContext.user ? userContext.user.userColor : 'var(--primary-color)'}`,
+  };
   return (
     <div className="page page-project" style={{ justifyContent: 'flex-start', padding: '10px' }}>
       <div className="card card-project">
         <div className="header-box" style={{ textAlign: 'left', backgroundColor: 'var(--primary-color)' }}>
           &nbsp;
-          <PlusCircleOutlined onClick={() => setAddProject(true)} /> NEW PROJECT
-          <span className="box--hover"> [ click + to add new ] </span>
+          <PlusCircleOutlined onClick={() => setAddProject(true)} /> NEW PROJECT CARD
+          <span className="box--hover"> [ create ] </span>
         </div>
         {addProject ? (
           <>
@@ -298,22 +320,11 @@ function Project() {
         )}
       </div>
 
-      <div
-        className="card card-project"
-        style={{
-          borderColor: `${userContext.user ? userContext.user.userColor : 'var(--primary-color)'}`,
-        }}
-      >
-        <div
-          className="header-box"
-          style={{
-            textAlign: 'left',
-            backgroundColor: `${userContext.user ? userContext.user.userColor : 'var(--primary-color)'}`,
-          }}
-        >
+      <div className="card card-project" style={userColor}>
+        <div className="header-box" style={userHeaderBox}>
           &nbsp;
-          <TeamOutlined onClick={() => setJoinRequest(true)} /> PENDING LIST
-          <span className="box--hover"> [ invited / ask to join] </span>
+          <TeamOutlined onClick={() => setJoinRequest(true)} /> PROJECT REQUEST CARD
+          <span className="box--hover"> [ pending ] </span>
         </div>
         {joinRequest ? (
           <>
@@ -495,6 +506,75 @@ function Project() {
             );
           })
         : null}
+
+      <div className="card card-project" style={userColor}>
+        <div className="header-box" style={userHeaderBox}>
+          &nbsp;
+          <UserOutlined /> USER CARD
+          <span className="box--hover"> [ user setting ] </span>
+        </div>
+        {resetPassword ? (
+          <>
+            <InputField
+              name="oldPassword"
+              label="OLD PASSWORD:"
+              type="password"
+              getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
+              format="text"
+              minLength={8}
+              need={true}
+              width="80%"
+            />
+            <InputField
+              name="newPassword"
+              label="NEW PASSWORD:"
+              type="password"
+              getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
+              format="text"
+              minLength={8}
+              need={true}
+              width="80%"
+            />
+            <InputField
+              name="confirmPassword"
+              label="CONFIRM NEW PASSWORD:"
+              type="password"
+              getValue={(value, field, isAlert) => valueGet(value, field, isAlert)}
+              format="text"
+              minLength={8}
+              need={true}
+              width="80%"
+            />
+            <div style={{ display: 'flex' }}>
+              <button className="btn-submit btn--primary" onClick={() => setResetPassword(false)} style={btnPending}>
+                - BACK -
+              </button>
+              <button
+                className="btn-submit btn--primary"
+                onClick={changePassword}
+                disabled={
+                  !validate.oldPassword ||
+                  !validate.newPassword ||
+                  !validate.confirmPassword ||
+                  value.confirmPassword !== value.newPassword
+                }
+                style={btnPending}
+              >
+                - CHANGE -
+              </button>
+            </div>
+          </>
+        ) : (
+          <div
+            className="list-block"
+            style={{ color: `${userContext.user ? userContext.user.userColor : 'var(--primary-color)'}` }}
+          >
+            <button className="btn-submit btn--primary" onClick={() => setResetPassword(true)} style={btnPending}>
+              -password change-
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

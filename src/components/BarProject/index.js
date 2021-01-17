@@ -4,11 +4,10 @@ import SelectProjectContext from '../../context/SelectProjectContext';
 import HoverProjectContext from '../../context/HoverProjectContext';
 import UserContext from '../../context/UserContext';
 
-function BarProject(props) {
+function BarProject() {
   const selectProjectContext = useContext(SelectProjectContext);
   const hoverProjectContext = useContext(HoverProjectContext);
   const userContext = useContext(UserContext);
-  //เดี๋ยวอันนี้รอข้อมูลจากbackend ลบ แล้วใช้แค่ props.xxx ไม่มีค่าdefault
   const initProjPercent = selectProjectContext.project
     ? selectProjectContext.project.totalProjectScore === 0
       ? 0
@@ -91,37 +90,46 @@ function BarProject(props) {
 
   return (
     <div className="container-bar-project">
-      <div className="bar-project-name"> PROJECT: {projectName}</div>
-      <div className="project-percent">
-        <p className="project-progress-label" style={{ backgroundColor: projectColor }}>
-          G:
-        </p>
-        <div className="bar-project-percent-bg" style={{ color: projectColor, borderColor: projectColor }}>
-          <div
-            className="bar-project-percent"
-            style={{ backgroundColor: projectColor, width: `${projectPercent}%` }}
-          ></div>
-          <div
-            className="percent-on-color"
-            style={{
-              color: projectColor,
-              right: `${projectPercent < 40 ? 0 : '-40px'}`,
-            }}
-          >{`${projectPercent}%`}</div>
-        </div>
-      </div>
-      <div className="project-percent">
-        <p className="project-progress-label" style={{ backgroundColor: userColor }}>
-          P:
-        </p>
-        <div className="bar-project-percent-bg" style={{ color: userColor, borderColor: userColor }}>
-          <div className="bar-project-percent" style={{ backgroundColor: userColor, width: `${userPercent}%` }}></div>
-          <div
-            className="percent-on-color"
-            style={{ color: userColor, right: `${projectPercent < 40 ? 0 : '-40px'}` }}
-          >{`${userPercent}%`}</div>
-        </div>
-      </div>
+      {userContext.role === 'guest' ? (
+        <div className="bar-project-name"> DoZalot ~ scrum board master [activity log]</div>
+      ) : (
+        <>
+          <div className="bar-project-name"> PROJECT: {projectName}</div>
+          <div className="project-percent">
+            <p className="project-progress-label" style={{ backgroundColor: projectColor }}>
+              G:
+            </p>
+            <div className="bar-project-percent-bg" style={{ color: projectColor, borderColor: projectColor }}>
+              <div
+                className="bar-project-percent"
+                style={{ backgroundColor: projectColor, width: `${projectPercent}%` }}
+              ></div>
+              <div
+                className="percent-on-color"
+                style={{
+                  color: projectColor,
+                  right: `${projectPercent < 40 ? 0 : '-40px'}`,
+                }}
+              >{`${projectPercent}%`}</div>
+            </div>
+          </div>
+          <div className="project-percent">
+            <p className="project-progress-label" style={{ backgroundColor: userColor }}>
+              P:
+            </p>
+            <div className="bar-project-percent-bg" style={{ color: userColor, borderColor: userColor }}>
+              <div
+                className="bar-project-percent"
+                style={{ backgroundColor: userColor, width: `${userPercent}%` }}
+              ></div>
+              <div
+                className="percent-on-color"
+                style={{ color: userColor, right: `${projectPercent < 40 ? 0 : '-40px'}` }}
+              >{`${userPercent}%`}</div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

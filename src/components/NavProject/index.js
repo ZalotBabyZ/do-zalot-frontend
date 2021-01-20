@@ -5,7 +5,7 @@ import UserContext from '../../context/UserContext';
 import SelectProjectContext from '../../context/SelectProjectContext';
 import HoverProjectContext from '../../context/HoverProjectContext';
 
-function NavProject() {
+function NavProject({ page }) {
   const history = useHistory();
   const userContext = useContext(UserContext);
   const hoverProjectContext = useContext(HoverProjectContext);
@@ -19,7 +19,11 @@ function NavProject() {
   };
 
   return (
-    <div className="nav-project">
+    <div
+      className={`nav-project ${
+        !userContext.userProject || userContext.userProject.projectCount === 0 ? 'nav-project--none' : null
+      }`}
+    >
       {userContext.userProject
         ? userContext.userProject.projectList.map((project, ind) => {
             return (

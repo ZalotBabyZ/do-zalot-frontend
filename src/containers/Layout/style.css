@@ -88,7 +88,13 @@
     border-right: dashed var(--primary-color) 0px;
     border-bottom: dashed var(--primary-color) 3px;
   }
+  .nav-project--none {
+    display: none;
+  }
   .page-side {
     height: 80px;
+  }
+  .page-side--none {
+    display: none;
   }
 }

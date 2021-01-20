@@ -71,7 +71,7 @@ function Project() {
   useEffect(() => {
     fetchRequest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectProjectContext.project.projectId]);
 
   const setListStatus = (listId, status, newBoxId) => {
     axios
